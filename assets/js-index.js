@@ -42,7 +42,7 @@ const initFields = () => {
 
 	fields.forEach(item => {
 		let input = item.querySelector(`input[type="text"],
-			input[type="email"], 
+			input[type="email"],
 			input[type="tel"],
 			input[type="url"],
 			input[type="password"],
@@ -450,6 +450,35 @@ const initAccount = () => {
 	}
 };
 
+const initHeader = () => {
+	const mobileActionsMenuTrigger = document.querySelector('.header-trigger');
+	const header = document.querySelector(".global-header");
+
+	mobileActionsMenuTrigger.addEventListener('click', e => {
+		header.classList.contains("mobile_menu_active")
+			? header.classList.remove("mobile_menu_active")
+			: header.classList.add("mobile_menu_active");
+	});
+
+};
+
+const initPageScroll = () => {
+  let scrollpos = window.scrollY;
+	const body = document.querySelector("body");
+	const header = document.querySelector(".global-header");
+  const headerHeight = header.offsetHeight;
+
+  const addClassOnScroll = () => body.classList.add("scrolled")
+  const removeClassOnScroll = () => body.classList.remove("scrolled")
+
+  window.addEventListener('scroll', function() {
+    scrollpos = window.scrollY;
+
+    if (scrollpos >= headerHeight) { addClassOnScroll() }
+    else { removeClassOnScroll() }
+  })
+}
+
 // execute pieces and components functions
 initItemQuantity();
 initFields();
@@ -457,6 +486,8 @@ initFields();
 // execute global and component functions
 initPageTransition();
 initPageAnimation();
+initPageScroll();
+initHeader();
 initContentLayout();
 
 // execute page specific functions

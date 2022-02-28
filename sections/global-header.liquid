@@ -13,53 +13,82 @@
 
 {% assign menu = linklists[section.settings.menu] %}
 
-<header class="global-header">
+<header class="global-header f-v f-j-c">
 <div class="c f-h">
-	
-	<a 
-		class="header-logo no-text-space" 
-		href="{{ shop.url }}" 
+
+	<button class="header-trigger tablet-down-only" id="mobile-actions-cart-trigger" aria-label="Toggle menu">
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	</button>
+
+	<a
+		class="header-logo no-text-space"
+		href="{{ shop.url }}"
 		aria-label="{{ shop.name | escape }} logo with link to homepage">
-	{% render 'svg-logo' %}</a>
+		<div class="logo_svg_wrap">
+			{% render 'svg-logo' %}
+		</div>
+	</a>
 
-	<nav class="header-links">
+	<nav class="header-links f-h f-auto f-j-b f-a-c tablet-up-only">
+
 		{% if menu.links != blank %}
-			<ul class="linklist">
-				{% for link in menu.links %}
-					
-					{% comment %} for subnavs/dropdowns/megamenus. shopify supports 3 link levels so add a 3rd level if needed. {% endcomment %}
-					
-					{% if link.links.size > 0 %}
-						<li class="linklist-item
-							{% if link.active == true %} is-active{% endif %}">
-							<a href="#">{{ link.title }}</a>
 
-							<ul class="linklist-child">
-								{% for childlink in link.links %}
-									<li class="linklist-child-item">
-										<a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
-									</li>
-								{% endfor %}
-							</ul>
-						</li>
-					{% else %}
-						<li class="linklist-item
-							{% if link.active == true %} is-active {% endif %}">
-							<a href="{{ link.url }}">{{ link.title }}</a>
+			<ul class="linklist f-h">
+				{% for link in menu.links %}
+					{% if forloop.index <= 3 %}
+						<li class="linklist-item {% if link.active == true %}is-active{% endif %}">
+							<a class="t-l-1" href="{{ link.url }}">{{ link.title }}</a>
 						</li>
 					{% endif %}
-
 				{% endfor %}
 			</ul>
+
+			<ul class="linklist f-h">
+				{% for link in menu.links %}
+					{% if forloop.index > 3 %}
+						<li class="linklist-item {% if link.active == true %}is-active{% endif %}">
+							<a class="t-l-1" href="{{ link.url }}">{{ link.title }}</a>
+						</li>
+					{% endif %}
+				{% endfor %}
+			</ul>
+
 		{% endif %}
+
 	</nav>
 
-	<div class="header-actions">
+	<!-- <div class="header-actions f-none">
 		{% if shop.customer_accounts_enabled %}
 			<a href="{{ shop.url | append: '/account' }}">Your Account</a>
 		{% endif %}
 
 		<a href="{{ shop.url | append: '/cart' }}">Cart (<span class="cart-total-items">{{ cart.item_count }}</span>)</a>
-	</div>
+	</div> -->
+
 </div>
+
+<div class="header-links--mobile f-v f-auto tablet-down-only">
+
+	{% if menu.links != blank %}
+
+		<nav class="header-links f-v f-auto f-j-c">
+			<ul class="linklist">
+
+				{% for link in menu.links %}
+
+					<li class="linklist-item {% if link.active == true %}is-active{% endif %}">
+						<a class="t-l-1" href="{{ link.url }}">{{ link.title }}</a>
+					</li>
+
+				{% endfor %}
+
+			</ul>
+		</nav>
+
+	{% endif %}
+
+</div>
+
 </header>

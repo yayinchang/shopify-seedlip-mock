@@ -1,0 +1,58 @@
+$md: 600px;
+$lg: 900px;
+$xl: 1200px;
+
+// Responsiveness
+@mixin from($device) {
+	@media screen and (min-width: $device) {
+		@content;
+	}
+}
+
+@mixin until($device) {
+	@media screen and (max-width: $device - 1px) {
+		@content;
+	}
+}
+
+@mixin mobile-only {
+	@media screen and (max-width: $md - 1px) {
+		@content;
+	}
+}
+
+@mixin touch {
+	@media screen and (max-width: $xl - 1px) {
+		@content;
+	}
+}
+
+@mixin tablet {
+	@media screen and (min-width: $md) {
+		@content;
+	}
+}
+
+@mixin tablet-only {
+	@media screen and (min-width: $md) and (max-width: $xl - 1px) {
+		@content;
+	}
+}
+
+@mixin laptop {
+	@media screen and (min-width: $lg) {
+		@content;
+	}
+}
+
+@mixin laptop-only {
+	@media screen and (min-width: $lg) and (max-width: $xl - 1px) {
+		@content;
+	}
+}
+
+@mixin desktop {
+	@media screen and (min-width: $xl) {
+		@content;
+	}
+}
