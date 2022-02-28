@@ -1,0 +1,17 @@
+{% capture image_html %}
+	{% assign image_size = max_width | append: 'x' | append: max_width %}
+
+	<img 
+		width="{{ image.width | round }}" 
+		height="{{ image.height | round }}" 
+		src="{{ image | img_url: image_size }}" 
+		alt="{{ alt | strip_html | escape }}" 
+		{% if classes %}
+			class="{{ classes }}" 
+		{% endif %}
+		{% if attributes %}
+			{{ attributes }}
+		{% endif %}>
+{% endcapture %}
+
+{{ image_html | strip_newlines | replace: '	', '' }}

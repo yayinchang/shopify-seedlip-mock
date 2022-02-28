@@ -1,0 +1,39 @@
+{% schema %}
+	{
+		"name": "Color Swatches",
+		"blocks": [
+			{
+				"type": "swatch",
+				"name": "Swatch",
+				"settings": [
+					{
+						"type": "text",
+						"id": "title",
+						"label": "Color name",
+						"info": "To match the color variants name 1:1"
+					},
+					{
+						"type": "color",
+						"id": "color",
+						"label": "Color"
+					}
+				]
+			}
+		]
+	}
+{% endschema %}
+
+{% capture swatch_css_html %}
+	{% for block in section.blocks %}
+		{% if block.settings.title != empty and 
+			block.settings.color != nil %}
+			[data-swatch-color="{{ block.settings.title | handleize }}"] {
+				background-color: {{ block.settings.color }} !important;
+			}
+		{% endif %}
+	{% endfor %}
+{% endcapture %}
+
+<style>
+	{{ swatch_css_html | strip_newlines | replace: '	', '' }}
+</style>

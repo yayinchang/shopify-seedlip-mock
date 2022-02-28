@@ -1,0 +1,19 @@
+<section class="article-hero">
+	<h1>{{ article.title }}</h1>
+	<p>{{ article.published_at | date: '%d %B %Y' }}</p>
+
+	{% if article.image %}
+		{% render 'img-srcset', 
+			image: article.image,
+			max_width: 1200,
+			alt: article.image.alt | escape %}
+	{% endif %}
+</section>
+
+<section class="article-content">
+<div class="c">
+	<div class="content-layout">
+		{{ article.content }}
+	</div>
+</div>
+</section>

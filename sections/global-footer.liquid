@@ -1,0 +1,53 @@
+{% schema %}
+{
+	"name": "Footer",
+	"settings": [
+		{
+			"type": "link_list",
+			"id": "menu",
+			"label": "Menu"
+		}
+	]
+}
+{% endschema %}
+
+{% assign menu = linklists[section.settings.menu] %}
+
+<footer class="global-footer">
+<div class="c f-h">
+	<a class="footer-logo" href="{{ shop.url }}" aria-label="{{ shop.name | escape }} logo with link to homepage">{% render 'svg-logo' %}</a>
+
+	<nav class="footer-links">
+		{% if menu.links != blank %}
+			<ul class="linklist">
+				{% for link in menu.links %}
+					
+					{% comment %} for subnavs/dropdowns/megamenus. shopify supports 3 link levels so add a 3rd level if needed. {% endcomment %}
+					
+					{% if link.links.size > 0 %}
+						<li class="linklist-item
+							{% if link.active == true %} is-active{% endif %}">
+							<a href="#">{{ link.title }}</a>
+
+							<ul class="linklist-child">
+								{% for childlink in link.links %}
+									<li class="linklist-child-item">
+										<a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
+									</li>
+								{% endfor %}
+							</ul>
+						</li>
+					{% else %}
+						<li class="linklist-item
+							{% if link.active == true %} is-active {% endif %}">
+							<a href="{{ link.url }}">{{ link.title }}</a>
+						</li>
+					{% endif %}
+
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</nav>
+
+</div>
+</footer>

@@ -1,0 +1,24 @@
+{% capture image_html %}
+	{% assign image_size = max_width | append: 'x' | append: max_width %}
+
+	<img 
+		width="{{ image.width | round }}" 
+		height="{{ image.height | round }}" 
+		data-src="{{ image | img_url: image_size }}" 
+		data-srcset="
+			{{ image | img_url: '100x100' }} 100w,
+			{{ image | img_url: '200x200' }} 200w,
+			{{ image | img_url: '400x400' }} 400w,
+			{{ image | img_url: '800x800' }} 800w,
+			{{ image | img_url: '1200x1200' }} 1200w,
+			{{ image | img_url: '2000x2000' }} 2000w
+		" 
+		data-sizes="auto" 
+		alt="{{ alt | strip_html | escape }}" 
+		class="lazyload {% if classes %}{{ classes }}{% endif %}" 
+		{% if attributes %}
+			{{ attributes }}
+		{% endif %}>
+{% endcapture %}
+
+{{ image_html | strip_newlines | replace: '	', '' }}

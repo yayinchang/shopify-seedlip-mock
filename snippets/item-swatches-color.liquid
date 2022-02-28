@@ -1,0 +1,108 @@
+{% capture none %}
+	<!-- 
+		usecase: 
+
+		========
+		Include the below at the top of the product template:
+		========
+
+			{% capture none %}
+				{% assign splitter = '###' %}
+				{% assign v_selected = product.selected_or_first_available_variant %}
+				{% assign color_index = -1 %}
+				{% assign has_color = false %}
+
+				{% comment %}  locate the index of "color" variant option {% endcomment %}
+				{% for option in product.options %}
+					{% assign option_h = option | handleize %}
+					{% if option_h == 'color' or option == 'colour' %}
+						{% assign option_color_index = forloop.index | minus: 1 %}
+						{% assign has_color = true %}
+					{% endif %}
+				{% endfor %}
+
+				{% comment %}  loop through color variants and capture data into strings (split into array below)  {% endcomment %}
+				{% for variant in product.variants %}
+					{% assign variant_split = variant.title | split: ' / ' %}
+
+					{% if color == nil or 
+						variant_split[option_color_index] != color %}
+						{% comment %} get color variants by color option index {% endcomment %}
+						{% assign color = variant_split[option_color_index] %}
+						{% assign color_index = color_index | plus: 1 %}
+
+						{% if variant.id == v_selected.id %}
+							{% assign active_color_index = color_index %}
+						{% endif %}
+
+						{% capture swatch_list %}{{ color | prepend: swatch_list | append: splitter }}{% endcapture %}
+					{% endif %}
+				{% endfor %}
+			{% endcapture %}
+
+		========
+		Render color swatches below, using data from above:
+		========
+
+			{% render 'item-swatches-color',
+				product: product,
+				active_index: active_color_index %}
+	-->
+
+	{% assign splitter = '###' %}
+
+	<!-- locate the index of "color" variant option -->
+	{% for option in product.options %}
+		{% assign option_h = option | handleize %}
+		{% if option_h == 'color' or option == 'colour' %}
+			{% assign option_color_index = forloop.index | minus: 1 %}
+		{% endif %}
+	{% endfor %}
+
+	<!-- loop through all variants in products -->
+	{% for variant in product.variants %}
+		{% assign variant_split = variant.title | split: ' / ' %}
+
+		<!-- loop through color variants and capture data into strings (split into array below)  -->
+		{% if color == nil or 
+			variant_split[option_color_index] != color %}
+			<!-- get color variants by color option index -->
+			{% assign color = variant_split[option_color_index] %}
+
+			{% unless swatch_list contains color %}
+				{% capture swatch_list %}{{ color | prepend: swatch_list | append: splitter }}{% endcapture %}
+				{% capture swatch_images %}{{ variant | img_url: '1024x1024' | prepend: swatch_images | append: splitter }}{% endcapture %}
+				{% capture swatch_url %}{{ variant.url | prepend: swatch_url | append: splitter }}{% endcapture %}
+				{% capture swatch_id %}{{ variant.id | prepend: swatch_id | append: splitter }}{% endcapture %}
+			{% endunless %}
+		{% endif %}
+	{% endfor %}
+
+	<!-- create arrays of swatch data, to be looped below -->
+	{% assign swatch_list = swatch_list | split: splitter %}
+	{% assign swatch_images = swatch_images | split: splitter %}
+	{% assign swatch_url = swatch_url | split: splitter %}
+	{% assign swatch_id = swatch_id | split: splitter %}
+
+	{% assign active_index = active_index | default: 0 %}
+{% endcapture %}
+
+{% capture swatches_html %}
+	<div class="item-swatches-color">
+		{% for swatch in swatch_list %}
+			<button 
+				type="button" 
+				{% if active_index == forloop.index0 %} class="is-active"{% endif %}
+				{% unless swatch_images[forloop.index0] and 
+					swatch_images[forloop.index0] contains 'no-image' %}
+					data-swatch-image="{{ swatch_images[forloop.index0] }}" 
+				{% endunless %}
+				data-swatch-url="{{ swatch_url[forloop.index0] }}" 
+				data-swatch-id="{{ swatch_id[forloop.index0] }}" 
+				data-swatch-color="{{ swatch | handleize }}" 
+				aria-label="{{ swatch }}"></button>
+		{% endfor %}
+	</div>
+{% endcapture %}
+
+{{ swatches_html | strip_newlines | replace: '	', '' }}

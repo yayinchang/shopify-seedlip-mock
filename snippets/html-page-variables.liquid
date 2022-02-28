@@ -1,0 +1,59 @@
+{% capture none %}
+	{% comment %}	page ID	{% endcomment %}
+	{% comment %}	assign then append page class below as needed	{% endcomment %}
+	{% if template == 'index' %}
+		{% assign page_id = 'template-frontpage' %}
+
+	{% elsif template.name contains 'list-collections' %}
+		{% assign page_id = 'template-list-collections' %}
+
+	{% elsif template.name contains 'collection' %}
+		{% assign page_id = 'template-product-index' %}
+
+	{% elsif template.name contains 'search' %}
+		{% assign page_id = 'template-search-index' %}
+
+	{% elsif template.name contains 'product' %}
+		{% assign page_id = 'template-product-single' %}
+
+	{% elsif template.name == 'blog' %}
+		{% assign page_id = 'template-blog-index' %}
+
+	{% elsif template.name contains 'article' %}
+		{% assign page_id = 'template-blog-single' %}
+
+	{% elsif template.name == 'cart' %}
+		{% assign page_id = 'template-cart' %}
+
+	{% elsif template contains 'customers' %}
+		{% assign page_id = 'template-account' %}
+		{% assign page_class = page_class | append: ' bg-subtle' %}
+
+	{% elsif template == '404' %}
+		{% assign page_id = 'template-404' %}
+
+	{% elsif template.name == 'page' %}
+		{% assign page_id = 'template-page-' | append: page.handle %}
+
+	{% else %}
+		{% assign page_id = 'template-page' %}
+
+	{% endif %}
+
+	{% comment %}	cart item state	{% endcomment %}
+	{% if cart.item_count > 0 %}
+		{% assign page_class = page_class | append: ' cart-has-items' %}
+	{% endif %}
+
+	{% comment %}	define shop language	{% endcomment %}
+	{% for locale in shop.published_locales %}
+		{% if shop_locale.primary == true %}
+			{% assign page_isocode = shop_locale.iso_code %}
+		{% endif %}
+	{% endfor %}
+
+	{% if page_isocode == empty or 
+		page_isocode == nil %}
+		{% assign page_isocode = 'en-US' %}
+	{% endif %}
+{% endcapture %}

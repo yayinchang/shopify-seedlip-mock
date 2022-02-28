@@ -1,0 +1,26 @@
+<section class="account-content">
+<div class="c-3">
+	{% form 'activate_customer_password' %}
+		<div class="account-gate-header type-spacing">
+			<h1 class="t-h-3">Activate Your account</h1>
+
+			{{ form.errors | default_errors }}
+		</div>
+
+		<div class="field">
+			<input type="password" name="customer[password]" id="active-password">
+			<label for="active-password">Password</label>
+		</div>
+
+		<div class="field">
+			<input type="password" name="customer[password_confirmation]" id="active-password-confirm">
+			<label for="active-password-confirm">Confirm your passowrd</label>
+		</div>
+
+		<button 
+			type="submit" 
+			class="btn">
+		Activate your account</button>
+	{% endform %}
+</div>
+</section>

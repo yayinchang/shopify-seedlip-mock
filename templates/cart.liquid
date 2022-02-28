@@ -1,0 +1,27 @@
+<section class="cart-content">
+<div class="c">
+	{% render 'comp-cart-items' %}
+
+	<div class="cart-content-actions">
+		<a class="btn" href="{{ shop.url | append: '/checkout' }}">Checkout</a>
+		<div class="cart-subtotal">Subtotal: <span class="cart-total-price">{{ cart.total_price | money }}</span></div>
+	</div>
+</div>
+</section>
+
+<section class="cart-empty">
+<div class="c">
+	<h1 class="t-h-1">Your cart is currently empty</h1>
+	<a class="btn" href="{{ shop.url }}">Continue Shopping</a>
+</div>
+</section>
+
+{% comment %}
+	Fold this styling into the main stylesheet
+{% endcomment %}
+<style>
+	html.cart-has-items .cart-empty,
+	html:not(.cart-has-items) .cart-content {
+		display: none;
+	}
+</style>

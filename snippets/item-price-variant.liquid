@@ -1,0 +1,7 @@
+{% if variant.compare_at_price_min > variant.price and 
+	variant.compare_at_price_max != 0 %}
+	<s>{{ variant.compare_at_price_min | money | remove: '.00' }}</s> 
+	<span>{{ variant.price | money | remove: '.00' }}</span>
+{% else %}
+	<span>{{ variant.price | money | remove: '.00' }}</span>
+{% endif %}

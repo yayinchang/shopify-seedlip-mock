@@ -1,0 +1,59 @@
+{% capture image_html %}
+	{% assign image_size = max_width | append: 'x' | append: max_width %}
+
+	{% if image_responsive != nil %}
+		{% assign image_responsive_src = image_responsive %}
+	{% else %}
+		{% assign image_responsive_src = image %}
+	{% endif %}
+
+	<picture 
+		{% if classes %}
+			class="{{ classes }}" 
+		{% endif %}
+		{% if attributes %}
+			{{ attributes }}
+		{% endif %}>
+		<source 
+			media="(min-width: {% if breakpoint %}{{ breakpoint | plus: 1 }}{% else %}601{% endif %}px)" 
+			srcset="
+				{{ image | img_url: '100x100' }} 100w,
+				{{ image | img_url: '200x200' }} 200w,
+				{{ image | img_url: '400x400' }} 400w,
+				{{ image | img_url: '800x800' }} 800w,
+				{{ image | img_url: '1200x1200' }} 1200w,
+				{{ image | img_url: '2000x2000' }} 2000w
+			" 
+			sizes="(max-width: {{ max_width }}px) 100vw, {{ max_width }}px">
+
+		<source 
+			media="(max-width: {% if breakpoint %}{{ breakpoint }}{% else %}600{% endif %}px)" 
+			srcset="
+				{{ image_responsive_src | img_url: '100x100' }} 100w,
+				{{ image_responsive_src | img_url: '200x200' }} 200w,
+				{{ image_responsive_src | img_url: '400x400' }} 400w,
+				{{ image_responsive_src | img_url: '800x800' }} 800w,
+				{{ image_responsive_src | img_url: '1200x1200' }} 1200w,
+				{{ image_responsive_src | img_url: '2000x2000' }} 2000w
+			" 
+			sizes="(max-width: {{ max_width }}px) 100vw, {{ max_width }}px">
+		
+		<img 
+			width="{{ image.width | round }}" 
+			height="{{ image.height | round }}" 
+			data-src="{{ image | img_url: image_size }}" 
+			data-srcset="
+				{{ image | img_url: '100x100' }} 100w,
+				{{ image | img_url: '200x200' }} 200w,
+				{{ image | img_url: '400x400' }} 400w,
+				{{ image | img_url: '800x800' }} 800w,
+				{{ image | img_url: '1200x1200' }} 1200w,
+				{{ image | img_url: '2000x2000' }} 2000w
+			" 
+			data-sizes="auto" 
+			alt="{{ alt | strip_html | escape }}" 
+			class="lazyload">
+	</picture>
+{% endcapture %}
+
+{{ image_html | strip_newlines | replace: '	', '' }}

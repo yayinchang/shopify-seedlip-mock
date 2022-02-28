@@ -1,0 +1,83 @@
+{% schema %}
+{
+	"name": "Sample",
+	"presets": [
+		{
+			"category": "Content",
+			"name": "Sample section"
+		}
+	],
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "image_1",
+			"label": "Image"
+		}
+	],
+	"blocks": [
+		{
+			"type": "block",
+			"name": "Block",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Image"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+<style>
+	section[class^="frontpage-example-"] {
+		margin: var(--s-section) auto;
+	}
+
+	.frontpage-example-layout .layout-left {
+		width: 40%;
+		margin-right: var(--s-4);
+	}
+
+	.frontpage-example-layout .layout-right {
+		flex: 1;
+	}
+</style>
+
+<section class="frontpage-example-type">
+<div class="c">
+	<div class="type-spacing">
+		<h1 class="t-h-1">Welcome to View Source's starter template</h1>
+		<a class="btn" href="">Button Link</a>
+	</div>
+</div>
+</section>
+
+<section class="frontpage-example-layout">
+<div class="c c-1 f-h-center">
+	<div class="layout-left">
+		{% if section.settings.image_1 != nil %}
+			{% render 'img-srcset', 
+				image: section.settings.image_1, 
+				max_width: 450,
+				alt: section.settings.image_1.alt %}
+		{% endif %}
+	</div>
+
+	<div class="layout-right type-spacing">
+		<h2 class="t-h-1"><code>h2</code> here but uses <code>.t-h-1</code> to style</h2>
+		<p class="t-b-1">
+			P tag here but uses .t-b-2 to style. An example of how we can separate syntax with styling to create semantic HTML, and manable CSS. 
+		</p>
+	</div>
+</div>
+</section>
+
+<section class="frontpage-example-layout-2">
+<div class="c">
+	<code>
+		This is a piece of code
+	</code>
+</div>
+</section>

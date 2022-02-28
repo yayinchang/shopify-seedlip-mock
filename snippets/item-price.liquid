@@ -1,0 +1,16 @@
+{% capture none %}
+	{% assign price_min = product.price_min | money | remove: '.00' %}
+	{% assign price_max = product.price_max | money | remove: '.00' %}
+{% endcapture %}
+
+{% if product.compare_at_price_min > product.price and 
+	product.compare_at_price_max != 0 %}
+	<s>{{ product.compare_at_price_min | money | remove: '.00' }}</s> 
+	<span>{{ price_min }}</span>
+{% else %}
+	{{ price_min }}{% if price_min != price_max %}+{% endif %}
+{% endif %}
+
+{% unless product.available %}
+	<span class="cr-subdued"> — Sold Out</span>
+{% endunless %}

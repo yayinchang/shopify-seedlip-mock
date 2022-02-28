@@ -1,0 +1,32 @@
+{% if product != blank %}
+	{% capture product_card_html %}
+		<div 
+			class="product-card" 
+			data-product-id="{{ product.id }}">
+			<div class="card-thumbnail">
+				<span class="object-fit">
+					{% render 'img-srcset', 
+						image: product.featured_image,
+						max_width: 600,
+						alt: product.title %}
+				</span>
+
+				<a 
+					class="card-url p-fill" 
+					href="{{ product.url | within: collection }}" 
+					title="{{ product.title | escape }}"></a>
+			</div>
+
+			<div class="card-info">
+				<div class="card-info-title t-b-2">{{ product.title }}</div>
+
+				<div class="card-price t-l-1">
+					{% render 'item-price', 
+						product: product %}
+				</div>
+			</div>
+		</div>
+	{% endcapture %}
+
+	{{ product_card_html | replace: '	', '' }}
+{% endif %}

@@ -1,0 +1,35 @@
+{% capture address_html %}
+	{{ customer.name }}
+
+	{% if address.company != blank %}
+		<br>{{ address.company }}
+	{% endif %}
+
+	<br>{{ address.address1 }}
+
+	{% if address.address2 != empty %}
+		<br>{{ address.address2 }}
+	{% endif %}
+
+	{% if address.city != empty %}
+		<br>{{ address.city }}
+	{% endif %}
+
+	{% if address.province_code != empty %}
+		, {{ address.province_code | upcase }}
+	{% endif %}
+
+	{% if address.zip != empty %}
+		&nbsp;{{ address.zip | upcase }}
+	{% endif %}
+
+	{% if address.country != empty %}
+		<br>{{ address.country }}
+	{% endif %}
+
+	{% if address.phone != empty %}
+		<br>{{ address.phone }}
+	{% endif %}
+{% endcapture %}
+
+{{ address_html | strip_newlines | replace: '	', '' }}

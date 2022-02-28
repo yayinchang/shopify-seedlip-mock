@@ -1,0 +1,69 @@
+<script>
+	{% comment %}	prevent safari to load from cache	{% endcomment %}
+	window.onpageshow = function (event) {
+		if (event.persisted) {
+			window.location.reload();
+		}
+	};
+
+	{% comment %}	prevent chrome to load from cache	{% endcomment %}
+	const perfEntries = performance.getEntriesByType("navigation");
+	if (typeof (perfEntries[0]) != 'undefined') {
+		if (perfEntries[0].type === "back_forward") { 
+			location.reload(true)
+		}
+	}
+
+	{% comment %}	dynamically set spacing variables	{% endcomment %}
+	const globalAnnouncement = document.querySelector('.global-announcement');
+	const globalHeader = document.querySelector('.global-header');
+
+	root.style.setProperty(
+		'--s-viewport-height-initial', `${window.innerHeight}px`
+	);
+
+	const setSpacingVariables = () => {
+		root.style.setProperty(
+			'--s-announcement', 
+			`${(globalAnnouncement ? globalAnnouncement.offsetHeight : 0)}px`
+		);
+
+		root.style.setProperty(
+			'--s-header', 
+			`${(globalHeader ? globalHeader.offsetHeight : 0)}px`
+		);
+
+		root.style.setProperty(
+			'--s-viewport-height', `${window.innerHeight}px`
+		);
+	}
+
+	setSpacingVariables();
+	window.addEventListener('resize', setSpacingVariables);
+
+	{% comment %}	set min container height to fill screen, so footer is always at bottom	{% endcomment %}
+	const main = document.getElementById('main');
+	const globalFooter = document.querySelector('.global-footer');
+
+	main.style.minHeight = `calc(100vh - ${
+		(globalFooter ? globalFooter.offsetHeight : 0)}px)`;
+
+	{% comment %}	assign loaded state to root	{% endcomment %}
+	root.classList.add('is_loaded');
+
+	console.log(
+		'%cSite by View Source \n%cview-source.com',
+		[
+			'margin: 20px 0 0;',
+			'font-size: 12px',
+			'font-family: Helvetica, sans-serif',
+			'font-weight: 700',
+		].join(';'),
+		[
+			'margin: -5px 0 20px;',
+			'font-size: 12px',
+			'font-family: Helvetica, sans-serif',
+			'font-weight: 400',
+		].join(';')
+	);
+</script>

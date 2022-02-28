@@ -1,0 +1,54 @@
+{% paginate blog.articles by 7 %}
+	<section class="blog-grid">
+	<div class="c">
+		{% for article in blog.articles %}
+			<div class="blog-post">
+				<a href="{{ article.url }}">{{ article.title }}</a>
+			</div>
+		{% endfor %}
+	</div>
+	</section>
+
+	{% if paginate.pages > 1 %}
+		<section class="blog-pagination">
+		<div class="c">
+			{{ paginate | default_pagination }}
+		</div>
+		</section>
+	{% endif %}
+{% endpaginate %}
+
+{% comment %}	
+	Infinite scrolling version:
+
+	{% paginate blog.articles by 7 %}
+		<section class="blog-grid">
+		<div class="c">
+			<div class="blog-load-more">
+				{% for article in blog.articles %}
+					<div class="blog-post">
+						{% render 'img-srcset', 
+							image: article.image, 
+							max_width: 600,
+							alt: article.image.alt %}
+								
+						<a href="{{ article.url }}">{{ article.title }}</a>
+					</div>
+				{% endfor %}
+			</div>
+
+			<button class="blog-load-more-trigger btn">Load more</button>
+		</div>
+		</section>
+
+		{% if paginate.pages > 1 %}
+			<section class="blog-pagination">
+			<div class="c">
+				<a 
+					class="blog-pagination-next"
+					href="{{ paginate.next.url }}"></a>
+			</div>
+			</section>
+		{% endif %}
+	{% endpaginate %}
+{% endcomment %}

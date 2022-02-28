@@ -1,0 +1,68 @@
+<section class="product-hero">
+	<div class="hero-images">
+		{% for image in product.images %}
+			{% render 'img-srcset', 
+				image: image,
+				max_width: 1800,
+				alt: image.alt %}
+		{% endfor %}
+	</div>
+
+	<div class="hero-content">
+		<h1 class="t-h-1">{{ product.title }}</h1>
+
+		<div class="content-price">
+			{% render 'item-price' %}
+		</div>
+
+		<div class="content-description">
+			{{ product.description }}
+		</div>
+
+		<form 
+			class="content-form" 
+			action="/cart/add" 
+			method="post" 
+			enctype="multipart/form-data">
+			{% if product.variants.size > 1 %}
+				<div class="field">
+					<select name="id">
+						<option selected disable>Select a variant</option>
+						{% for variant in product.variants %}
+							<option 
+								value="{{ variant.id }}" 
+								{% if variant.available == false %}
+									disabled 
+								{% endif %}
+								{% if variant.id == product.selected_or_first_available_variant.id %}
+									selected 
+								{% endif %}>
+								{{ variant.title }}
+								{% if variant.available == false %} - Sold Out{% endif %}
+							</option>
+						{% endfor %}
+					</select>
+				</div>
+			{% else %}
+				<input 
+					type="hidden" 
+					name="id" 
+					value="{{ product.selected_or_first_available_variant.id }}">
+			{% endif %}
+
+			{% render 'item-quantity' %}
+
+			{% if product.available %}
+				<button 
+					class="btn" 
+					type="submit">
+				Add to Cart</button>
+			{% else %}
+				<button 
+					class="btn"
+					disabled>
+					Sold Out</button>
+			{% endif %}
+		</form>
+	</div>
+</section>

@@ -1,0 +1,82 @@
+<section class="account-content">
+<div class="c-3">
+	<div class="account-content-header type-spacing">
+		<h1 class="t-h-3">Welcome Back{% if customer.first_name != empty %}, {{ customer.first_name }}{% endif %}!</h1>
+
+		<a class="btn" href="{{ shop.url | append: '/account/logout' }}" >Log Out</a>
+	</div>
+
+	<div class="account-orders">
+		<h2 class="t-l-1">Order History</h2>
+
+		{% if customer.orders.size != 0 %}
+			<ul>
+				<li class="orders-list-header">
+					<ul class="f-h t-l-2">
+						<li>Order</li>
+						<li>Date</li>
+						<li>Payment</li>
+						<li>Fulfillment</li>
+						<li>Total</li>
+					</ul>
+				</li>
+
+				{% for order in customer.orders %}
+					<li class="orders-list-line">
+						<ul class="f-h">
+							<li>{{ order.name }}</li>
+							<li>{{ order.created_at | date: '%m/%d/%y' }}</li>
+							<li>{{ order.financial_status_label }}</li>
+							<li>{{ order.fulfillment_status_label }}</li>
+							<li>{{ order.total_price | money }}</li>
+						</ul>
+
+						<a 
+							class="p-fill" 
+							href="{{ order.customer_url }}" 
+							title="{{ order.name | escape }}"></a>
+					</li>
+				{% endfor %}
+			</ul>
+		{% else %}
+			<p class="t-b-1">You haven’t placed any orders yet. Check back after placing an order to view details here.</p>
+		{% endif %}
+	</div>
+
+	<div class="account-addresses">
+		<h2 class="t-l-1">Your Address{% if customer.addresses.size > 1 %}es{% endif %}</h2>
+
+		{% if customer.addresses.size == 0 %}
+			<p class="t-b-1">You haven’t added any addreses yet. Click the button below to save your first address.</p>
+		{% else %}
+			<div id="address-list" class="f-h">
+				{% paginate customer.addresses by 100 %}
+					{% for address in customer.addresses %}
+						<div class="address">
+							<p>{% render 'account-address', 
+								address: address %}</p>
+
+							{% if address == customer.default_address %}(Default){% endif %}
+
+							<div class="address-actions t-l-2">
+								<button 
+									type="button"
+									onclick="Shopify.CustomerAddress.toggleForm({{ address.id }}); return false">
+								Edit</button>
+								 / 
+								<button 
+									type="button" 
+									onclick="Shopify.CustomerAddress.destroy({{ address.id }}, &quot;Are you sure you wish to delete this address?&quot;); return false">
+								Delete</button>
+							</div>
+						</div>
+					{% endfor %}
+				{% endpaginate %}
+			</div>
+		{% endif %}
+
+		<button class="address-add-trigger btn">
+			Add New Address +</button>
+	</div>
+</div>
+</section>

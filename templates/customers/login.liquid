@@ -1,0 +1,7 @@
+{% if customer %}
+	<script>
+		window.location.href = "{{ shop.url | append: '/account' }}";
+	</script>
+{% else %}
+	{% include 'account-gate' %}
+{% endif %}

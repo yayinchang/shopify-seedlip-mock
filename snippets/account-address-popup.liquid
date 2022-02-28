@@ -1,0 +1,336 @@
+{{ 'shopify_common.js' | shopify_asset_url | script_tag }}
+{{ 'customer_area.js' | shopify_asset_url | script_tag }}
+
+{% paginate customer.addresses by 20 %}
+{% for address in customer.addresses %}
+	<div 
+		id="address-edit{{ address.id }}" 
+		class="address-popup c-3" style="display: none;">
+		<div class="address-popup-header f-h-center">
+			<h2 class="t-l-1">Edit Address</h2>
+
+			<button 
+				type="button" 
+				class="address-popup-close"
+				aria-label="close popup">
+			{% render 'svg-icons', icon: 'close' %}</button>
+		</div>
+
+		{% form 'customer_address', address %}
+			<div class="address-popup-content">
+				<div class="field-group">
+					<div class="field">
+						<input 
+							type="text" 
+							id="AddressFirstName_{{ form.id }}" 
+							name="address[first_name]" 
+							value="{{ form.first_name }}" 
+							autocapitalize="words">
+						<label for="AddressFirstName_{{ form.id }}">First Name</label>
+					</div>
+
+					<div class="field">
+						<input 
+							type="text" 
+							id="AddressLastName_{{ form.id }}" 
+							name="address[last_name]" 
+							value="{{ form.last_name }}" 
+							autocapitalize="words">
+						<label for="AddressLastName_{{ form.id }}">Last Name</label>
+					</div>
+				</div>
+
+				<div class="field">
+					<input 
+						type="text" 
+						id="AddressCompany_{{ form.id }}" 
+						name="address[company]" 
+						value="{{ form.company }}" 
+						autocapitalize="words">
+					<label for="AddressCompany_{{ form.id }}">Company</label>
+				</div>
+
+				<div class="field">
+					<input 
+						type="text" 
+						id="AddressAddress1_{{ form.id }}" 
+						name="address[address1]" 
+						value="{{ form.address1 }}" 
+						autocapitalize="words">
+					<label for="AddressAddress1_{{ form.id }}">Address 1</label>
+				</div>
+
+				<div class="field">
+					<input 
+						type="text" 
+						id="AddressAddress2_{{ form.id }}" 
+						name="address[address2]" 
+						value="{{ form.address2 }}" 
+						autocapitalize="words">
+					<label for="AddressAddress2_{{ form.id }}">Address 2</label>
+				</div>
+
+				<div class="field-group">
+					<div class="field">
+						<input 
+							type="text" 
+							id="AddressCity_{{ form.id }}" 
+							name="address[city]" 
+							value="{{ form.city }}" 
+							autocapitalize="words">
+						<label for="AddressCity_{{ form.id }}">City</label>
+					</div>
+
+					<div class="field">
+						<input 
+							type="text" 
+							id="AddressZip_{{ form.id }}" 
+							name="address[zip]" 
+							value="{{ form.zip }}" 
+							autocapitalize="characters">
+						<label for="AddressZip_{{ form.id }}">Zip Code</label>
+					</div>
+				</div>
+
+				<div class="field-group">
+					<div class="field">
+						<select 
+							id="AddressCountry_{{ form.id }}" 
+							name="address[country]" 
+							data-default="{{ form.country }}">
+						{{ country_option_tags }}</select>
+					</div>
+
+					<div 
+						class="field" 
+						id="AddressProvinceContainer_{{ form.id }}" 
+						style="display:none">
+						<select 
+							id="AddressProvince_{{ form.id }}" 
+							name="address[province]" 
+							data-default="{{ form.province }}"></select>
+					</div>
+				</div>
+
+				<div class="field">
+					<input 
+						type="tel" 
+						id="AddressPhone_{{ form.id }}" 
+						name="address[phone]" 
+						value="{{ form.phone }}">
+
+					<label for="AddressPhone_{{ form.id }}">Phone Number</label>
+				</div>
+
+				<div class="field label-inline">
+					{{ form.set_as_default_checkbox }}
+					<label for="address_default_address_{{ form.id }}">Set as default address</label>
+				</div>
+			</div>
+
+			<div class="address-popup-footer">
+				<button 
+					type="submit" 
+					class="btn">
+				Save Address</button>
+			</div>
+		{% endform %}
+	</div>
+{% endfor %}
+{% endpaginate %}
+
+<div class="address-popup address-add c-3" style="display: none;">
+	<div class="address-popup-header f-h-center">
+		<h2 class="t-l-1">Add New Address</h2>
+
+		<button 
+			type="button" 
+			class="address-popup-close"
+			aria-label="close popup">
+		{% render 'svg-icons', icon: 'close' %}</button>
+	</div>
+
+	{% form 'customer_address', customer.new_address %}
+	<div class="address-popup-content">
+		<div class="field-group">
+			<div class="field">
+				<input 
+					type="text" 
+					name="address[first_name]" 
+					value="{{ form.first_name }}" 
+					autocapitalize="words" 
+					id="AddressFirstNameNew">
+				<label for="AddressFirstNameNew">First Name</label>
+			</div>
+
+			<div class="field">
+				<input 
+					type="text" 
+					name="address[last_name]" 
+					value="{{ form.last_name }}" 
+					autocapitalize="words" 
+					id="AddressLastNameNew">
+				<label for="AddressLastNameNew">Last Name</label>
+			</div>
+		</div>
+
+		<div class="field">
+			<input 
+				type="text" 
+				name="address[company]" 
+				value="{{ form.company }}" 
+				autocapitalize="words" 
+				id="AddressCompanyNew">
+			<label for="AddressCompanyNew">Company</label>
+		</div>
+
+		<div class="field">
+			<input 
+				type="text" 
+				name="address[address1]" 
+				value="{{ form.address1 }}" 
+				autocapitalize="words" 
+				id="AddressAddress1New">
+			<label for="AddressAddress1New">Address 1</label>
+		</div>
+
+		<div class="field">
+			<input 
+				type="text" 
+				name="address[address2]" 
+				value="{{ form.address2 }}" 
+				autocapitalize="words" 
+				id="AddressAddress2New">
+			<label for="AddressAddress2New">Address 2</label>
+		</div>
+
+		<div class="field-group">
+			<div class="field">
+				<input 
+					type="text" 
+					name="address[city]" 
+					value="{{ form.city }}" 
+					autocapitalize="words" 
+					id="AddressCityNew">
+				<label for="AddressCityNew">City</label>
+			</div>
+
+			<div class="field">
+				<input 
+					type="text" 
+					name="address[zip]" 
+					value="{{ form.zip }}" 
+					autocapitalize="characters" 
+					id="AddressZipNew">
+				<label for="AddressZipNew">Zip Code</label>
+			</div>
+		</div>
+
+		<div class="field-group">
+			<div class="field">
+				<select 
+					name="address[country]" 
+					data-default="{{ form.country }}"
+					id="AddressCountryNew">
+				{{ country_option_tags }}</select>
+			</div>
+
+			<div 
+				id="AddressProvinceContainerNew" 
+				class="field" 
+				style="display:none">
+				<select 
+					id="AddressProvinceNew" 
+					name="address[province]" 
+					data-default="{{ form.province }}"></select>
+			</div>
+		</div>
+
+		<div class="field">
+			<input 
+				type="tel" 
+				name="address[phone]" 
+				value="{{ form.phone }}" 
+				id="AddressPhoneNew">
+			<label for="AddressPhoneNew">Phone Number</label>
+		</div>
+
+		<div class="field label-inline">
+			{{ form.set_as_default_checkbox }}
+			<label for="address_default_address_new">Set as default address</label>
+		</div>
+	</div>
+
+	<div class="address-popup-footer">
+		<button 
+			type="submit" 
+			class="btn">
+		Save Address</button>
+	</div>
+	{% endform %}
+</div>
+
+<div class="address-popup-overlay"></div>
+
+<script>
+	// open/close address popup
+	document.addEventListener('click', (e) => {
+		if(e.target && (
+				(
+					e.target.classList.contains('address-popup-close') || 
+					e.target.closest('.address-popup-close')
+				) || 
+				(
+					e.target.classList.contains('address-popup-overlay') || 
+					e.target.closest('.address-popup-overlay')
+				)
+			)
+		) {
+			root.classList.remove('address-popup-active');
+			document.querySelector('.address-popup.active').classList.remove('active');
+		}
+	});
+
+	if(document.querySelector('.address-add-trigger')) {
+		document.querySelector('.address-add-trigger').addEventListener('click', event => {
+			event.preventDefault();
+
+			root.classList.add('address-popup-active');
+			document.querySelector('.address-add').classList.add('active');
+		});
+	}
+
+	// Initialize observers on address selectors
+	new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
+		hideElement: 'AddressProvinceContainerNew'
+	});
+
+	// Setup province selector on each customer address
+	{% paginate customer.addresses by 20 %}
+		{% for address in customer.addresses %}
+			new Shopify.CountryProvinceSelector('AddressCountry_{{ address.id }}', 'AddressProvince_{{ address.id }}', {
+				hideElement: 'AddressProvinceContainer_{{ address.id }}'}
+			);
+		{% endfor %}
+	{% endpaginate %}
+
+	// Modified contents of customer_area.js (global asset)
+	Shopify.CustomerAddress = {
+		toggleForm: function(id) {
+			root.classList.add('address-popup-active');
+			document.getElementById(`address-edit${id}`).classList.add('active');
+			return false;
+		},
+		toggleNewForm: function() {
+			return false;
+		},
+		destroy: function(id, confirm_msg) {
+			if (confirm(confirm_msg || 
+				'Are you sure you wish to delete this address?')) {
+				Shopify.postLink('/account/addresses/'+id, {
+					'parameters': {'_method': 'delete'}
+				});
+			}
+		}
+	}
+</script>

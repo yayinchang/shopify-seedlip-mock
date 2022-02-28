@@ -1,0 +1,31 @@
+<section class="search-header">
+<div class="c type-spacing">
+	{% if search.results_count > 0 %}
+		<h1 class="t-h-2">{{ search.terms }}</h1>
+		<p class="t-b-1">Your search returned {{ search.results_count }} result{% if search.results_count > 1 %}s{% endif %}</p>
+	{% else %}
+		<h1 class="t-h-2">No Results</h1>
+		<p class="t-b-1">Your search “{{ search.terms }}” returned no results.</p>
+	{% endif %}
+</div>
+</section>
+
+<section class="search-results">
+<div class="c">
+	{% paginate search.results by 100 %}
+		{% for result in search.results %}
+			{% if result.url contains '/pages/' %}
+				{% continue %}
+			{% endif %}
+
+			{% if result.author != nil %}
+				{% comment %}	articles	{% endcomment %}
+				{{ result.title }}
+			{% else %}
+				{% comment %}	products	{% endcomment %}
+				{{ result.title }}
+			{% endif %}
+		{% endfor %}
+	{% endpaginate %}
+</div>
+</section>

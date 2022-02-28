@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% include 'html-page-variables' %}
+
+<!--[if lt IE 7]><html id="{{ page_id }}" class="no-js lt-ie9 lt-ie8 lt-ie7 {{ page_class }}" lang="{{ page_isocode }}"> <![endif]-->
+<!--[if IE 7]><html id="{{ page_id }}" class="no-js lt-ie9 lt-ie8 {{ page_class }}" lang="{{ page_isocode }}"> <![endif]-->
+<!--[if IE 8]><html id="{{ page_id }}" class="no-js lt-ie9 {{ page_class }}" lang="{{ page_isocode }}"> <![endif]-->
+<!--[if IE 9]><html id="{{ page_id }}" class="ie9 no-js {{ page_class }}" lang="{{ page_isocode }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html id="{{ page_id }}" class="{{ page_class }}" lang="{{ page_isocode }}">
+	<!--<![endif]-->
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+		<link rel="canonical" href="{{ canonical_url }}">
+		<link rel="icon" href="{{ 'favicon.ico' | asset_url }}">
+		{% comment %}
+			By preloading critical resources, the likelihood blocking a page’s render is decreased since the asset begins loading before the browser starts rendering the page
+		{% endcomment %}
+		<link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+		<link rel="preload" href="{{ 'js-initialize.js' | asset_url }}" as="script">
+		<link rel="preload" href="{{ 'styles.min.css' | asset_url }}" as="style">
+
+		<script>
+			// site variables
+			const siteUrl = '{{ shop.url }}';
+			const root = document.documentElement;
+		</script>
+
+		{{ 'js-initialize.js' | asset_url | script_tag }}
+
+		{{ content_for_header }}
+		{% include 'html-page-sharing' %}
+
+		{% comment %}  inline CSS, to avoid style flash  {% endcomment %}
+		{% capture html_init %}
+			{% include 'html-css-reset' %}
+			{% include 'html-css-utilities' %}
+			{% include 'html-css-animations' %}
+			{% include 'html-css-first-paint' %}
+		{% endcapture %}
+		{{ html_init | strip_newlines | replace: '	', '' }}
+		{{ "styles.min.css" | asset_url | stylesheet_tag }}
+	</head>
+
+	<body>
+		<div class="global-skip">
+			<a class="btn" href="#main">Skip to content</a>
+		</div>
+
+		{% section 'global-announcement' %}
+		{% section 'global-header' %}
+		<main id="main">{{ content_for_layout }}</main>
+		{% section 'global-footer' %}
+
+		{% comment %}
+			{% section 'global-swatches-color' %}
+			to be used in conjunction with snippet/item-swatches-color.liquid in the PDP, or product grids
+		{% endcomment %}
+
+		{% include 'html-js-after-footer' %}
+		{{ 'js-polyfill-intersection-observer.js' | asset_url | script_tag }}
+		{{ 'js-polyfill-smooth-scroll.js' | asset_url | script_tag }}
+		{{ 'js-polyfill-focus-visible.js' | asset_url | script_tag }}
+		{{ 'js-plugin-lazysizes.js' | asset_url | script_tag }}
+		{{ 'js-plugin-infinite-scrolling.js' | asset_url | script_tag }}
+		{{ 'js-plugin-reframe.js' | asset_url | script_tag }}
+		<script src="{{ 'js-index.js' | asset_url }}" defer></script>
+
+		{% if template == 'customers/account' or
+			template == 'customers/addresses' %}
+			{% render 'account-address-popup' %}
+		{% endif %}
+	</body>
+</html>

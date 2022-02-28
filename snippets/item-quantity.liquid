@@ -1,0 +1,42 @@
+{% capture none %}
+	<!--
+		- item: variant object (e.g. {{ line_item.variant }} or {{ product.selected_or_first_available_variant }})
+		- starting_number: number to start with (e.g. {{ item.quantity }})
+		- leading_zero: true/false
+	-->
+	{% assign starting_number = starting_number | default: 1 | plus: 0 %}
+{% endcapture %}
+
+<div class="item-quantity f-h user-select-disable {% if leading_zero %} has-leading-zero{% endif %}">
+	<button 
+		{% if starting_number == 1 %}
+			class="is-inactive" 
+		{% endif %}
+		type="button" 
+		data-quantity-trigger="decrease" 
+		aria-label="Decrease quantity">
+	</button>
+
+	<input 
+		type="number" 
+		name="quantity" 
+		value="{% if leading_zero and starting_number == nil %}0{% elsif leading_zero and starting_number < 10 %}0{% endif %}{{ starting_number }}" 
+		min="1"
+		{% comment %}
+		{% if item.inventory_policy == 'continue' or 
+			item.inventory_management != 'shopify' %}
+			max="9999"
+		{% else %}
+			max="{{ item.inventory_quantity }}"
+		{% endif %}
+		{% endcomment %}
+		max="10"
+		class="t-b-1" 
+		aria-label="Quantity">
+
+	<button 
+		type="button" 
+		data-quantity-trigger="increase" 
+		aria-label="Increase quantity">
+	</button>
+</div>

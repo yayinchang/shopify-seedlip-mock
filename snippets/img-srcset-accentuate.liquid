@@ -1,0 +1,34 @@
+{% capture image_html %}
+	{% if image.aspect_ratio < 1 %}
+		{% assign orientation = 'w' %}
+	{% else %}
+		{% assign orientation = 'h' %}
+	{% endif %}
+
+	{% assign image_size = orientation | append: '_' | append: max_width %}
+
+	<img 
+		width="{{ image.width | round }}" 
+		height="{{ image.height | round }}" 
+		data-src="{{ image.cloudinary_src | append: image_size }}" 
+		data-srcset="
+			{{ image.cloudinary_src | append: orientation | append: '_100' }} 100w,
+			{{ image.cloudinary_src | append: orientation | append: '_200' }} 200w,
+			{{ image.cloudinary_src | append: orientation | append: '_400' }} 400w,
+			{{ image.cloudinary_src | append: orientation | append: '_800' }} 800w,
+			{{ image.cloudinary_src | append: orientation | append: '_1200' }} 1200w,
+			{{ image.cloudinary_src | append: orientation | append: '_2000' }} 2000w,
+		" 
+		data-sizes="auto" 
+		{% if alt %}
+			alt="{{ alt | strip_html | escape }}" 
+		{% else %}
+			alt="{{ image.alt | strip_html | escape }}" 
+		{% endif %}
+		class="lazyload {% if classes %}{{ classes }}{% endif %}" 
+		{% if attributes %}
+			{{ attributes }}
+		{% endif %}>
+{% endcapture %}
+
+{{ image_html | strip_newlines | replace: '	', '' }}

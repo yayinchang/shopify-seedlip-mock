@@ -1,0 +1,76 @@
+{% capture none %}
+	<!-- 
+		usecase: 
+		{% render 'comp-email-capture', 
+			id: 'password-gate', 
+			classes: 'cr-white p-center', 
+			klaviyo_list_id: section.settings.klaviyo_list_id,
+			source: 'Password Gate',
+			heading: section.settings.email_capture_heading,
+			success_message: section.settings.email_capture_success_message %} 
+
+		to be added into </head>
+		{{ "//www.klaviyo.com/media/js/public/klaviyo_subscribe.js" | script_tag }}
+	-->
+{% endcapture %}
+
+<form 
+	id="{{ id }}-email-capture" 
+	class="comp-email-capture {{ classes }}" 
+	data-success-message="{{ success_message 
+		| default: 'Thanks for subscribing!' | escape }}" 
+	action="//manage.kmail-lists.com/subscriptions/subscribe" 
+	data-ajax-submit="//manage.kmail-lists.com/ajax/subscriptions/subscribe" 
+	method="GET" 
+	target="_blank" 
+	novalidate="novalidate" >
+	{% if heading != empty %}
+		<h3 class="t-h-3">{{ heading }}</h3>
+	{% endif %}
+
+	<input type="hidden" name="g" value="{{ klaviyo_list_id }}">
+
+	<div class="field">
+		<label 
+			class="screen-reader-only" 
+			for="{{ id }}-email-capture-email">
+		Email</label>
+
+		<input 
+			id="{{ id }}-email-capture-email" 
+			type="email" 
+			name="email" 
+			placeholder="Email">
+	</div>
+
+	<div class="field">
+		<label 
+			class="screen-reader-only" 		
+			for="{{ id }}-email-capture-phone-number">
+		Phone Number (optional)</label>
+		<input 
+			id="{{ id }}-email-capture-phone-number" 
+			type="email" 
+			name="phone_number" 
+			placeholder="Phone Number (optional)">
+	</div>
+
+	<div class="field">
+		<button 
+			type="submit">
+		Sign Up</button>
+	</div>
+</form>
+
+<script type="text/javascript">
+	KlaviyoSubscribe.attachToForms('#{{ id }}-email-capture', {
+		hide_form_on_success: true,
+		extra_properties: {
+			$source: '{{ source }}'
+		},
+		success: function(data) {
+			let _newsletterForm = document.getElementById('{{ id }}-email-capture');
+			_newsletterForm.classList.add('is-success');
+		}
+	});
+</script>

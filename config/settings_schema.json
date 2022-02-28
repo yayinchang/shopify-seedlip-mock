@@ -1,0 +1,28 @@
+[{
+	"name": "theme_info",
+	"logo": "https:\/\/cdn.shopify.com\/s\/files\/1\/0070\/7032\/files\/2010_6_23_Shopify-Green_256x256.jpg",
+	"settings": [
+		{
+			"type": "header",
+			"content": "{{shop.name}}" 
+		},
+		{
+			"type": "paragraph",
+			"content": "v1.0"
+		}
+	]
+},
+{
+	"name": "Header",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Product 1"
+		},
+		{
+			"type": "text",
+			"id": "header_product_1_image",
+			"label": "Image Picker 1"
+		}
+	]
+}]

@@ -1,0 +1,135 @@
+{% schema %}
+{
+	"name": "Announcement",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Announcement"
+		},
+		{
+			"type": "richtext",
+			"id": "announcement_message_1",
+			"label": "Message 1"
+		},
+		{
+			"type": "url",
+			"id": "announcement_message_1_url",
+			"label": "Message 1 URL"
+		},
+		{
+			"type": "richtext",
+			"id": "announcement_message_2",
+			"label": "Message 2"
+		},
+		{
+			"type": "url",
+			"id": "announcement_message_2_url",
+			"label": "Message 2 URL"
+		},
+		{
+			"type": "color",
+			"id": "background_color",
+			"label": "Background Color"
+		},
+		{
+			"type": "color",
+			"id": "text_color",
+			"label": "Text Color"
+		},
+		{
+			"type": "color",
+			"id": "emphasize_color",
+			"label": "Emphasize Color",
+			"info": "For bolden text strings"
+		}
+	]
+}
+{% endschema %}
+
+{% assign message_1 = section.settings.announcement_message_1 %}
+{% assign url_1 = section.settings.announcement_message_1_url %}
+{% assign message_2 = section.settings.announcement_message_2 %}
+{% assign url_2 = section.settings.announcement_message_2_url %}
+{% assign background_color = section.settings.background_color %}
+{% assign text_color = section.settings.text_color %}
+{% assign emphasize_color = section.settings.emphasize_color %}
+
+{% if message_1 != empty or message_2 != empty %}
+	<div class="global-announcement cr-white bg-black">
+		<div class="announcement-text c">
+			{% if message_1 != empty and url_1 != blank %}
+				<span><a 
+					class="user-select-disable" 
+					href="{{ url_1 }}" 
+					aria-label="{{ message_1 | strip_html | escape }}">
+				{{ message_1 }}</a></span>
+			{% elsif message_1 != empty %}
+				<span>{{ message_1 }}</span>
+			{% endif %}
+
+			{% if message_2 != empty and url_2 != blank %}
+				<span><a 
+					class="user-select-disable" 
+					href="{{ url_2 }}" 
+					aria-label="{{ message_2 | strip_html | escape }}">
+				{{ message_2 }}</a></span>
+			{% elsif message_2 != empty %}
+				<span>{{ message_2 }}</span>
+			{% endif %}
+		</div>
+	</div>
+{% endif %}
+
+<style>
+	.global-announcement {
+		{% if text_color != blank %}
+			color: {{ text_color }};
+		{% endif %}
+
+		{% if background_color != blank %}
+			background-color: {{ background_color }};
+		{% endif %}
+	}
+
+	{% if emphasize_color != blank %}
+		.global-announcement strong,
+		.global-announcement b {
+			color: {{ emphasize_color }};
+		}
+	{% endif %}
+
+	{% if text_color != blank %}
+		.global-announcement span:not(:first-of-type):before {
+			background-color: var(--cr-white);
+		}
+	{% endif %}
+</style>
+
+{% comment %}
+	Fold the below styling into the snippet/html-css-first-paint
+{% endcomment %}
+
+<style>
+	.global-announcement {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		padding: var(--s-2) 0;
+		text-align: center;
+		z-index: 100;
+	}
+
+	.global-announcement span {
+		display: inline-block;
+	}
+
+	.global-announcement span:not(:first-of-type):before {
+		content: '';
+		display: inline-block;
+		height: 1em;
+		width: 1px;
+		margin: 0 1em;
+		vertical-align: -0.2em;
+	}
+</style>

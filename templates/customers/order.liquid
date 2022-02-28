@@ -1,0 +1,135 @@
+<section class="account-content">
+<div class="c-3">
+	<div class="account-content-header type-spacing">
+		<h1 class="t-h-3">Order {{ order.name }}</h1>
+		<a class="btn" href="{{ shop.url | append: '/account' }}">← Back to account info</a>
+	</div>
+
+	<div class="order-details-summary f-h">
+		<div class="block">
+			<div class="t-l-1">Order Date</div>
+			<p>{{ order.created_at | date: '%m/%d/%y' }}</p>
+		</div>
+
+		<div class="block">
+			<div class="t-l-1">Order No.</div>
+			<p>{{ order.name }}</p>
+		</div>
+
+		<div class="block">
+			<div class="t-l-1">Payment Status</div>
+			<p>{{ order.financial_status_label }}</p>
+		</div>
+
+		<div class="block">
+			<div class="t-l-1">Fullfillment Status</div>
+			<p>{{ order.fulfillment_status_label }}</p>
+
+			{% for item in order.line_items %}
+				{% if item.fulfillment and item.fulfillment.tracking_url %}
+					{% assign order_tracking_url = item.fulfillment.tracking_url %}
+				{% endif %}
+			{% endfor %}
+
+			{% if order_tracking_url %}
+				<p><a href="{{ order_tracking_url }}" target="_blank">{{ order.fulfillment_status_label }}</a></p>
+			{% endif %}
+		</div>
+
+		<div class="block">
+			<h3 class="t-l-1">Billing Address</h3>
+			<p>{% render 'account-address', address: order.billing_address %}</p>
+		</div>
+
+		<div class="block">
+			<h3 class="t-l-1">Shipping Address</h3>
+			<p>{% render 'account-address', address: order.shipping_address %}</p>
+		</div>
+	</div>
+
+	<div class="order-details">
+		<ul>
+			<li>
+				<ul class="order-details-header f-h t-l-2">
+					<li></li>
+					<li>Info</li>
+					<li>QTY</li>
+					<li>Total</li>
+				</ul>
+			</li>
+
+			{% for item in order.line_items %}
+				<li>
+					<ul class="order-details-items f-h">
+						<li class="item-thumbnail">
+							<a 
+								href="{{ item.url }}" 
+								class="object-contain" 
+								title="{{ item.title | escape }}">
+								{% if item.image != nil %}
+									{% render 'img-srcset', 
+										image: item.image,
+										max_width: 160,
+										alt: item.image.alt %}
+								{% endif %}
+							</a>
+						</li>
+
+						<li class="item-info">
+							<p class="t-b-2">
+								{{ item.product.title }}
+
+								{% if item.variant != empty and 
+									item.variant.title != 'Default Title' %}
+									<br>{{ item.variant.title }}
+								{% endif %}
+							</p>
+
+							<div class="t-l-2">{{ item.price | money }}</div>
+						</li>
+
+						<li class="item-quantity-count">
+							{{ item.quantity }}
+						</li>
+
+						<li class="item-total-price">
+							{{ item.line_price | money }}
+						</li>
+					</ul>
+				</li>
+			{% endfor %}
+		</ul>
+	</div>
+
+	<div class="order-details-footer">
+		{% for discount_application in order.discount_applications %}
+			<div class="summary">
+				<div class="summary-left">Discount: </div>
+				<div class="summary-right">{{ discount_application.total_allocated_amount | money }} ({{ discount_application.title }})</div>
+			</div>
+		{% endfor %}
+
+		<div class="summary">
+			<div class="summary-left">Subtotal: </div>
+			<div class="summary-right">{{ order.subtotal_price | money }}</div>
+		</div>
+
+		{% for tax_line in order.tax_lines %}
+			<div class="summary">
+				<div class="summary-left">Tax ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%): </div>
+				<div class="summary-right">{{ tax_line.price | money }}</div>
+			</div>
+		{% endfor %}
+
+		<div class="summary">
+			<div class="summary-left">Shipping: </div>
+			<div class="summary-right">{{ order.shipping_price | money }}</div>
+		</div>
+
+		<div class="summary t-b-1">
+			<div class="summary-left">Total: </div>
+			<div class="summary-right">{{ order.total_price | money }}</div>
+		</div>
+	</div>
+</div>
+</section>

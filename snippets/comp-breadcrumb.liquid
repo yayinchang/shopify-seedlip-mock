@@ -1,0 +1,41 @@
+<div 
+	class="comp-breadcrumb cr-subdued" 
+	role="navigation" 
+	aria-label="breadcrumbs">
+	<ul class="t-l-1">
+		<li><a href="{{ shop.url }}" title="Home">Home</a></li>
+
+		{% if template contains 'page' %}
+			<li>{{ page.title }}</li>
+		{% elsif template contains 'product' %}
+			{% if collection.url %}
+				<li>{{ collection.title | link_to: collection.url }}</li>
+			{% endif %}
+			<li>{{ product.title }}</li>
+
+		{% elsif template contains 'collection' and 
+			collection.handle %}
+			{% if current_tags %}
+				{% capture url %}/collections/{{ collection.handle }}{% endcapture %}
+				<li>{{ collection.title | link_to: url }}</li>
+				<li>{{ current_tags | join: " + " }}</li>
+			{% else %}
+				<li>{{ collection.title }}</li>
+			{% endif %}
+
+		{% elsif template == 'blog' %}
+			{% if current_tags %}
+				<li>{{ blog.title | link_to: blog.url }}</li>
+				<li>{{ current_tags | join: " + " }}</li>
+			{% else %}
+				<li>{{ blog.title }}</li>
+			{% endif %}
+
+		{% elsif template == 'article' %}
+			<li>{{ blog.title | link_to: blog.url }}</li>
+			<li>{{ article.title }}</li>
+		{% else %}
+			<li>{{ page_title }}</li>
+		{% endif %}
+	</ul>
+</div>
