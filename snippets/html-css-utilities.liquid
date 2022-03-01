@@ -19,16 +19,18 @@
 	--cr-primary: #154734;
 	--cr-secondary: #bbc5ba;
 
-	--font-family: 'Gill Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+	--font-sans-serif: 'Gill Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
 
-	--t-h-1: 500 48px/1.1 var(--font-family);
-	--t-h-2: 500 24px/1.1 var(--font-family);
-	--t-h-3: 500 20px/1.1 var(--font-family);
-	--t-h-4: 500 18px/1.1 var(--font-family);
-	--t-b-1: 400 24px/1.25 var(--font-family);
-	--t-b-2: 400 16px/1.25 var(--font-family);
-	--t-l-2: 400 14px/1 var(--font-family);
-	--t-l-1: 400 12px/1 var(--font-family);
+	--font-serif: Baskerville, serif;
+
+	--t-h-1: 500 48px/1.2 var(--font-sans-serif);
+	--t-h-2: 500 40px/1.2 var(--font-sans-serif);
+	--t-h-3: 500 24px/1.2 var(--font-sans-serif);
+	--t-h-4: 500 16px/1.2 var(--font-serif);
+	--t-b-1: 400 16px/1.5 var(--font-serif);
+	--t-b-2: 400 12px/1.5 var(--font-serif);
+	--t-l-2: 400 14px/1.5 var(--font-sans-serif);
+	--t-l-1: 400 12px/1.5 var(--font-sans-serif);
 
 	--s-1: 5px;
 	--s-2: 10px;
@@ -83,6 +85,10 @@
 
 @media screen and (max-width: 600px) {
 	:root {
+		--t-h-1: 500 32px/1.2 var(--font-sans-serif);
+		--t-h-2: 500 24px/1.2 var(--font-sans-serif);
+		--t-h-3: 500 20px/1.2 var(--font-sans-serif);
+
 		--s-section: var(--s-4);
 		--s-section-half: var(--s-3);
 	}
@@ -115,22 +121,22 @@
 /*	U2 COLOR	*/
 
 .cr-black {
-	color: var(--cr-black);
+	color: var(--cr-black) !important;
 }
 .cr-white {
-	color: var(--cr-white);
+	color: var(--cr-white) !important;
 }
 .cr-subdued {
-	color: var(--cr-subdued);
+	color: var(--cr-subdued) !important;
 }
 .cr-subtle {
-	color: var(--cr-subtle);
+	color: var(--cr-subtle) !important;
 }
 .cr-primary {
-	color: var(--cr-primary);
+	color: var(--cr-primary) !important;
 }
 .cr-secondary {
-	color: var(--cr-secondary);
+	color: var(--cr-secondary) !important;
 }
 
 .bg-black {
@@ -162,16 +168,21 @@ body {
 h1,
 .t-h-1 {
 	font: var(--t-h-1);
+	letter-spacing: .12em;
 }
 
 h2,
 .t-h-2 {
 	font: var(--t-h-2);
+	letter-spacing: .12em;
+	text-transform: uppercase;
 }
 
 h3,
 .t-h-3 {
 	font: var(--t-h-3);
+	letter-spacing: .12em;
+	text-transform: uppercase;
 }
 
 h4,
@@ -179,26 +190,46 @@ h5,
 h6,
 .t-h-4 {
 	font: var(--t-h-4);
+	letter-spacing: .12em;
+	text-transform: uppercase;
 }
 
+p,
 .t-b-1 {
 	font: var(--t-b-1);
 }
 
 .t-b-2 {
 	font: var(--t-b-2);
+	letter-spacing: .02em;
 }
 
 .t-l-2 {
-	text-transform: uppercase;
-	letter-spacing: 0.1em;
 	font: var(--t-l-2);
+	letter-spacing: .15em;
+	text-transform: uppercase;
 }
 
 .t-l-1 {
-	text-transform: uppercase;
-	letter-spacing: 0.1em;
 	font: var(--t-l-1);
+	letter-spacing: .15em;
+	text-transform: uppercase;
+}
+
+.t-cap {
+	text-transform: uppercase;
+}
+
+.t-left {
+	text-align: left;
+}
+
+.t-right {
+	text-align: right;
+}
+
+.t-center {
+	text-align: center;
 }
 
 /*	U3 TYPOGRAPHY - END	*/
@@ -257,6 +288,10 @@ h6,
 .c-5,
 .w-5 {
 	max-width: var(--w-5);
+}
+
+.h-full {
+	height: 100%;
 }
 
 .f-h {

@@ -23,10 +23,10 @@
 	</button>
 
 	<a
-		class="header-logo no-text-space"
+		class="header-logo no-text-space p-center"
 		href="{{ shop.url }}"
 		aria-label="{{ shop.name | escape }} logo with link to homepage">
-		<div class="logo_svg_wrap">
+		<div class="main_logo_wrap">
 			{% render 'svg-logo' %}
 		</div>
 	</a>
@@ -69,7 +69,7 @@
 
 </div>
 
-<div class="header-links--mobile f-v f-auto tablet-down-only">
+<div class="header-links--mobile f-v f-auto t-center tablet-down-only">
 
 	{% if menu.links != blank %}
 
@@ -79,7 +79,7 @@
 				{% for link in menu.links %}
 
 					<li class="linklist-item {% if link.active == true %}is-active{% endif %}">
-						<a class="t-l-1" href="{{ link.url }}">{{ link.title }}</a>
+						<a class="t-l-1 cr-primary" href="{{ link.url }}">{{ link.title }}</a>
 					</li>
 
 				{% endfor %}

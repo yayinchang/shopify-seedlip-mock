@@ -1,0 +1,64 @@
+{% schema %}
+{
+	"name": "Hero section",
+	"settings": [
+		{
+			"type": "text",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "It all begins w/ the"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "original non-alcoholic spirits"
+		},
+		{
+			"type": "text",
+			"id": "cta_label",
+			"label": "CTA Label",
+			"default": "Shop Now"
+		},
+		{
+			"type": "url",
+			"id": "cta_url",
+			"label": "CTA URL"
+		}
+	]
+}
+{% endschema %}
+
+{% assign subheading = section.settings.subheading %}
+{% assign heading = section.settings.heading %}
+{% assign cta_label = section.settings.cta_label %}
+
+<section class="frontpage-hero">
+
+	<video class="frontpage-hero__video" loop="true" playsinline="" autoplay="autoplay" muted>
+		<source src="{{ 'seedlipdrinks-home-video.mp4' | file_url }}" type="video/mp4">
+	</video>
+
+	<div class="frontpage-hero__body p-fill">
+		<div class="c f-v h-full">
+
+			<div class="frontpage-hero__logo">
+				<div class="main_logo_wrap">
+					{% render 'svg-logo' %}
+				</div>
+			</div>
+
+			<div class="frontpage-hero__message c-3 cr-white t-center pb-5">
+				<p class="t-l-1 mb-2">{{ subheading | strip_html }}</p>
+				<h2>{{ heading | strip_html }}</h2>
+
+				{% if section.settings.cta_url != nil %}
+					<a
+						class="btn btn--primary mt-4"
+						href="{{ section.settings.cta_url }}"
+						title="{{ section.settings.cta_label | escape }}">{{ cta_label }}</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</section>

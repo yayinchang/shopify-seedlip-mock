@@ -183,6 +183,25 @@
 	}
 }
 
+.btn--primary {
+	font: var(--t-l-1);
+	line-height: 48px;
+	letter-spacing: 0.15em;
+	text-transform: uppercase;
+	height: 48px;
+	background: var(--cr-primary);
+	border-radius: 60px;
+	border: 1px var(--cr-primary) solid;
+	padding: 0 var(--s-4);
+
+	@media (hover: hover) {
+		&:hover {
+			color: var(--cr-primary);
+			background: var(--cr-white);
+		}
+	}
+}
+
 .btn[disabled],
 button[disabled],
 input[disabled] {

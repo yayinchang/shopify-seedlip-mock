@@ -1,0 +1,23 @@
+$positions: (
+	top: t,
+	right: r,
+	left: l,
+	bottom: b,
+);
+
+@each $pos, $abbr in $positions {
+	@for $i from 1 through 6 {
+		.p-#{$i} {
+			padding: var(--s-#{$i});
+		}
+		.p#{$abbr}-#{$i} {
+			padding-#{$pos}: var(--s-#{$i});
+		}
+		.m-#{$i} {
+			margin: var(--s-#{$i});
+		}
+		.m#{$abbr}-#{$i} {
+			margin-#{$pos}: var(--s-#{$i});
+		}
+	}
+}

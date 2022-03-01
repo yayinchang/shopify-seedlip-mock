@@ -13,6 +13,12 @@
 
 /*  1.0 SITEWIDE  */
 
+.main_logo_wrap {
+	width: 265px;
+	max-width: 100%;
+	margin: 0 auto;
+}
+
 /*  1.1 HEADER  */
 
 .global-header {
@@ -43,20 +49,14 @@
 
 .header-logo {
 	display: inline-block;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	opacity: 0;
 	transition: opacity 0.4s var(--a-panel);
 
-	.logo_svg_wrap {
-		width: 265px;
-		max-width: 100%;
-		margin: 0 auto;
+	.scrolled & {
+		opacity: 1;
 	}
 
-	.scrolled & {
+	.mobile_menu_active & {
 		opacity: 1;
 	}
 
@@ -120,7 +120,6 @@
 	&--mobile {
 		width: 100%;
 		height: 0;
-		text-align: center;
 		transition: all 0.4s var(--a-panel);
 		overflow: hidden;
 
@@ -582,6 +581,25 @@ html.address-popup-active .address-popup-overlay {
 		height: 100%;
 		width: 100%;
 		object-fit: cover;
+	}
+
+	&__body {
+	}
+
+	&__logo {
+		margin-top: 100px;
+
+		.main_logo_wrap {
+			color: var(--cr-white);
+		}
+	}
+
+	&__message {
+		margin-top: 100px;
+
+		@include mobile-only {
+			margin-top: auto;
+		}
 	}
 }
 
