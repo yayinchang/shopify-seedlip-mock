@@ -1,30 +1,81 @@
-{% if collection.image != nil %}
-	{% render 'img-srcset', 
-		image: collection.image, 
-		max_width: 1800,
-		alt: collection.image.alt %}
-{% endif %}
+<div class="header-space"></div>
 
-<h1 class="t-h-1">{{ collection.title }}</h1>
+<div class="collection bg-subdued pb-6">
+	<div class="c">
 
-{% if collection.description != empty %}
-	<p>{{ collection.description }}</p>
-{% endif %}
+		<div class="collection__banner">
+			<div class="collection__banner__image">
+				<span class="object-fit br-2">
 
-{% if collection.products.size > 0 %}
-	{% paginate collection.products by 24 %}
-		<div class="collection-products f-h">
-			{% for product in collection.products %}
-				{% render 'product-card',
-					product: product %}
-			{% endfor %}
+					{% if collection.image != nil %}
+						{% render 'img-srcset',
+							image: collection.image,
+							max_width: 1800,
+							alt: collection.image.alt %}
+					{% else %}
+						{% render 'img-srcset-files',
+							image: "collection_banner-default.jpg",
+							max_width: 1800,
+							alt: "Shop | Non-Alcoholic Distilled Spirits | Seedlip" %}
+					{% endif %}
+
+				</span>
+			</div>
 		</div>
 
-		{% if paginate.next %}
-			<a href="{{ paginate.next.url }}" title="Next page"></a>
-		{% endif %}
-	{% endpaginate %}
-{% else %}
-	<h2 class="t-h-2">Sorry, there are no products in this collection</h2>
-	<a class="btn" href="{{ shop.url }}">Continue Shopping</a>
-{% endif %}
+		<div class="collection__header t-center pt-4 pb-4">
+			<h2 class="t-l-1 mb-2">Shop {{ collection.title }}</h2>
+			<h1 class="t-h-3 mb-4">Carefully crafted for your consideration</h1>
+		</div>
+
+
+		<div class="collection__body">
+
+			{% if collection.products.size > 0 %}
+
+				{% paginate collection.products by 10 %}
+
+					<div class="collection__list">
+
+						{% for product in collection.products %}
+							{% render 'product-card', product: product %}
+						{% endfor %}
+
+					</div>
+
+					{% if paginate.pages > 1 %}
+						<div class="collection__pagination f-h f-j-c f-a-c mt-5 mb-5">
+
+							{% if paginate.previous.is_link %}
+								<a class="collection__pagination__nav mr-3" href="{{ paginate.previous.url }}" title="Previous page">
+									{% render 'svg-icons', icon: 'arrow-left-alt' %}
+								</a>
+							{% endif %}
+
+							{% for page in paginate.parts %}
+
+							<a class="collection__pagination__item t-l-1 {% if page.is_link == false %}is-current{% endif %}" href="{{ page.url }}">{{ page.title }}</a>
+
+							{% endfor %}
+
+							{% if paginate.next.is_link %}
+								<a class="collection__pagination__nav ml-3" href="{{ paginate.next.url }}" title="Next page">
+									{% render 'svg-icons', icon: 'arrow-right-alt' %}
+								</a>
+							{% endif %}
+						</div>
+					{% endif %}
+
+				{% endpaginate %}
+
+			{% else %}
+
+				<h2 class="t-h-2">Sorry, there are no products in this collection</h2>
+				<a class="btn" href="{{ shop.url }}">Continue Shopping</a>
+
+			{% endif %}
+
+		</div>
+
+	</div>
+</div>

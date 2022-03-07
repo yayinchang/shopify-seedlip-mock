@@ -265,6 +265,7 @@ input[disabled] {
 	-webkit-transform: translate3d(-50%, -50%, 0);
 	transform: translate3d(-50%, -50%, 0);
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 .object-fit.object-fit > *,
 .object-contain.object-fit > * {
@@ -296,6 +297,7 @@ input[disabled] {
 	-o-object-fit: cover;
 	object-fit: cover;
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 input[type='radio'],
 input[type='checkbox'] {

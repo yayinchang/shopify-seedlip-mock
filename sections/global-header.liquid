@@ -14,7 +14,7 @@
 {% assign menu = linklists[section.settings.menu] %}
 
 <header class="global-header f-v f-j-c">
-<div class="c f-h">
+<div class="c f-h f-j-b">
 
 	<button class="header-trigger tablet-down-only" id="mobile-actions-cart-trigger" aria-label="Toggle menu">
 		<span class="icon-bar"></span>
@@ -59,13 +59,16 @@
 
 	</nav>
 
-	<!-- <div class="header-actions f-none">
-		{% if shop.customer_accounts_enabled %}
+	<div class="header-actions f-none">
+		<!-- {% if shop.customer_accounts_enabled %}
 			<a href="{{ shop.url | append: '/account' }}">Your Account</a>
-		{% endif %}
+		{% endif %} -->
 
-		<a href="{{ shop.url | append: '/cart' }}">Cart (<span class="cart-total-items">{{ cart.item_count }}</span>)</a>
-	</div> -->
+		<a class="header-cart f-h f-j-c f-a-c" href="{{ shop.url | append: '/cart' }}">
+			{% render 'svg-icons', icon: 'cart' %}
+		</a>
+		<span class="cart-total-items t-l-1">{{ cart.item_count }}</span>
+	</div>
 
 </div>
 

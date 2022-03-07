@@ -1,30 +1,44 @@
 {% if product != blank %}
+
 	{% capture product_card_html %}
-		<div 
-			class="product-card" 
+		<div
+			class="product-card {% if product.metafields.accentuate.expand_layout %}is-expanded{% endif %}"
+			data-product-collections="{% for collection in product.collections %}{{ collection.title | downcase }},{% endfor %}"
 			data-product-id="{{ product.id }}">
 			<div class="card-thumbnail">
-				<span class="object-fit">
-					{% render 'img-srcset', 
+				<span class="object-fit br-2">
+					{% render 'img-srcset',
 						image: product.featured_image,
 						max_width: 600,
 						alt: product.title %}
 				</span>
 
-				<a 
-					class="card-url p-fill" 
-					href="{{ product.url | within: collection }}" 
+				<a
+					class="card-url p-fill"
+					href="{{ product.url | within: collection }}"
 					title="{{ product.title | escape }}"></a>
 			</div>
 
-			<div class="card-info">
-				<div class="card-info-title t-b-2">{{ product.title }}</div>
+			<div class="card-info mt-2">
+				<h3 class="t-l-1 f-auto mb-1">{{ product.title }}</h3>
 
-				<div class="card-price t-l-1">
-					{% render 'item-price', 
-						product: product %}
+				<div class="card-price t-l-1 mb-1">
+					{% render 'item-price', product: product %}
 				</div>
 			</div>
+
+			<div class="card-add-to-cart pt-4 mb-2">
+				<button
+					class="btn btn--primary"
+					data-cart-add-id="{{ product.variants.first.id }}">
+					{% if product.selected_or_first_available_variant.inventory_quantity > 0 %}
+						Add to Cart
+					{% else %}
+						Preorder Now
+					{% endif %}
+				</button>
+			</div>
+
 		</div>
 	{% endcapture %}
 

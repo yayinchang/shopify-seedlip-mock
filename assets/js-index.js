@@ -464,12 +464,11 @@ const initHeader = () => {
 
 const initPageScroll = () => {
   let scrollpos = window.scrollY;
-	const body = document.querySelector("body");
 	const header = document.querySelector(".global-header");
   const headerHeight = header.offsetHeight;
 
-  const addClassOnScroll = () => body.classList.add("scrolled")
-  const removeClassOnScroll = () => body.classList.remove("scrolled")
+  const addClassOnScroll = () => header.classList.add("scrolled")
+  const removeClassOnScroll = () => header.classList.remove("scrolled")
 
   window.addEventListener('scroll', function() {
     scrollpos = window.scrollY;
@@ -489,6 +488,8 @@ initPageAnimation();
 initPageScroll();
 initHeader();
 initContentLayout();
+
+initCart();
 
 // execute page specific functions
 switch (root.id) {

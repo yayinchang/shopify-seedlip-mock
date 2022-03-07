@@ -3,10 +3,10 @@
 	{% assign price_max = product.price_max | money | remove: '.00' %}
 {% endcapture %}
 
-{% if product.compare_at_price_min > product.price and 
+{% if product.compare_at_price_min > product.price and
 	product.compare_at_price_max != 0 %}
-	<s>{{ product.compare_at_price_min | money | remove: '.00' }}</s> 
 	<span>{{ price_min }}</span>
+	<s class="pl-1" style="opacity: 0.5;">{{ product.compare_at_price_min | money | remove: '.00' }}</s>
 {% else %}
 	{{ price_min }}{% if price_min != price_max %}+{% endif %}
 {% endif %}

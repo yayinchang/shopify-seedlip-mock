@@ -158,11 +158,10 @@
 
 body {
 	font: var(--t-b-2);
+	color: var(--cr-primary);
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
 	-moz-osx-font-smoothing: grayscale;
-	color: var(--cr-primary);
-	background-color: var(--cr-subdued);
 }
 
 h1,
@@ -240,7 +239,7 @@ p,
 	/*	cap full width content at 2000px so that it doesn't infinitely extend	*/
 
 	html {
-		background-color: var(--cr-subtle);
+		background-color: var(--cr-subdued);
 	}
 
 	/* header needed separately in case it is fixed */
@@ -252,7 +251,7 @@ p,
 	}
 
 	body {
-		background-color: var(--cr-white);
+		background-color: var(--cr-subdued);
 	}
 }
 
@@ -415,6 +414,7 @@ p,
 	-webkit-transform: translate3d(-50%, -50%, 0);
 	transform: translate3d(-50%, -50%, 0);
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 
 .object-fit > * {
@@ -443,6 +443,7 @@ p,
 	height: 101% !important;
 	object-fit: cover;
 	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
 }
 
 /*

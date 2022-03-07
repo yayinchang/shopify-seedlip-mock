@@ -5,6 +5,13 @@ $positions: (
 	bottom: b,
 );
 
+$radius: (
+	top-left: tl,
+	top-right: tr,
+	bottom-left: bl,
+	bottom-right: br,
+);
+
 @each $pos, $abbr in $positions {
 	@for $i from 1 through 6 {
 		.p-#{$i} {
@@ -18,6 +25,17 @@ $positions: (
 		}
 		.m#{$abbr}-#{$i} {
 			margin-#{$pos}: var(--s-#{$i});
+		}
+	}
+}
+
+@each $pos, $abbr in $radius {
+	@for $i from 1 through 6 {
+		.br-#{$i} {
+			border-radius: var(--s-#{$i});
+		}
+		.br-#{$abbr}-#{$i} {
+			border-#{$pos}-radius: var(--s-#{$i});
 		}
 	}
 }
