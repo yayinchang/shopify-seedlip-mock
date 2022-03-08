@@ -171,6 +171,96 @@
 /*  1.1 HEADER - END  */
 
 /*  1.2 FOOTER  */
+
+.global-footer {
+	color: var(--cr-white);
+	background-color: var(--cr-primary);
+	padding: var(--s-5) 0;
+}
+
+.footer-grid {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+
+	@include touch {
+		grid-template-columns: 1fr;
+	}
+}
+
+.footer-subscribe {
+	max-width: 320px;
+	margin: 0 auto;
+	order: 1;
+}
+
+.footer-social {
+	[class*='svg-social'] {
+		height: 25px;
+	}
+}
+
+.footer-logo {
+	display: block;
+	order: 2;
+	height: 50%;
+	margin: 0 auto;
+	place-self: center;
+
+	@include touch {
+		order: 3;
+		width: 50%;
+	}
+}
+
+.footer-links {
+	order: 3;
+
+	.linklist {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.linklist-item {
+		width: 50%;
+		a {
+			padding: var(--s-3) 0;
+			.svg-arrow-left-alt {
+				display: none;
+			}
+		}
+	}
+
+	@include touch {
+		order: 2;
+
+		.linklist {
+			margin: var(--s-4) 0;
+			flex-direction: column;
+		}
+
+		.linklist-item {
+			width: 100%;
+			a {
+				border-top: 1px solid var(--cr-subdued);
+				.svg-arrow-left-alt {
+					display: block;
+					width: 25px;
+				}
+			}
+		}
+	}
+}
+
+.footer-copyright {
+	opacity: 0.5;
+	margin-top: var(--s-5);
+	p {
+		font-size: 10px;
+		letter-spacing: 0.185em;
+		line-height: 1.5;
+	}
+}
+
 /*  1.2 FOOTER - END  */
 
 /*  1.3 GENERAL + MISC  */

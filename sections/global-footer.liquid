@@ -6,6 +6,21 @@
 			"type": "link_list",
 			"id": "menu",
 			"label": "Menu"
+		},
+		{
+			"type": "text",
+			"id": "email_capture_heading",
+			"label": "Newsletter heading"
+		},
+		{
+			"type": "richtext",
+			"id": "email_capture_message",
+			"label": "Newsletter heading"
+		},
+		{
+			"type": "text",
+			"id": "email_capture_success_message",
+			"label": "Newsletter heading"
 		}
 	]
 }
@@ -14,40 +29,69 @@
 {% assign menu = linklists[section.settings.menu] %}
 
 <footer class="global-footer">
-<div class="c f-h">
-	<a class="footer-logo" href="{{ shop.url }}" aria-label="{{ shop.name | escape }} logo with link to homepage">{% render 'svg-logo' %}</a>
+<div class="c">
 
-	<nav class="footer-links">
-		{% if menu.links != blank %}
-			<ul class="linklist">
-				{% for link in menu.links %}
-					
-					{% comment %} for subnavs/dropdowns/megamenus. shopify supports 3 link levels so add a 3rd level if needed. {% endcomment %}
-					
-					{% if link.links.size > 0 %}
-						<li class="linklist-item
-							{% if link.active == true %} is-active{% endif %}">
-							<a href="#">{{ link.title }}</a>
+	<div class="footer-grid">
 
-							<ul class="linklist-child">
-								{% for childlink in link.links %}
-									<li class="linklist-child-item">
-										<a href="{{ childlink.url }}">{{ childlink.title | escape }}</a>
-									</li>
-								{% endfor %}
-							</ul>
-						</li>
-					{% else %}
+		<div class="footer-subscribe mb-4">
+			{% render 'comp-email-capture',
+				id: 'password-gate',
+				classes: 'cr-white t-center',
+				klaviyo_list_id: section.settings.klaviyo_list_id,
+				source: 'Password Gate',
+				heading: section.settings.email_capture_heading,
+				message: section.settings.email_capture_message,
+				success_message: section.settings.email_capture_success_message %}
+
+			{% if menu.links != blank %}
+				<ul class="linklist footer-social f-h f-j-e f-a-c">
+					{% for link in menu.links limit: 1 %}
+						{% for childlink in link.links %}
+						{% assign svg_icon = childlink.title | escape | downcase | prepend: 'social-' %}
+							<li class="linklist-child-item">
+								<a href="{{ childlink.url }}">
+									{% render 'svg-icons', icon: svg_icon %}
+								</a>
+							</li>
+						{% endfor %}
+					{% endfor %}
+
+				</ul>
+			{% endif %}
+		</div>
+
+		<a
+			class="footer-logo no-text-space"
+			href="{{ shop.url }}"
+			aria-label="{{ shop.name | escape }} logo with link to homepage">
+			<div class="main_logo_wrap">
+				{% render 'svg-logo' %}
+			</div>
+		</a>
+
+		<nav class="footer-links">
+			{% if menu.links != blank %}
+				<ul class="linklist">
+					{% for link in menu.links offset: continue %}
 						<li class="linklist-item
 							{% if link.active == true %} is-active {% endif %}">
-							<a href="{{ link.url }}">{{ link.title }}</a>
+							<a class="t-l-1 f-h f-a-c f-j-b" href="{{ link.url }}">
+								{{ link.title }}
+								{% render 'svg-icons', icon: 'arrow-right-alt' %}
+							</a>
 						</li>
-					{% endif %}
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</nav>
 
-				{% endfor %}
-			</ul>
-		{% endif %}
-	</nav>
+	</div>
+
+	<div class="footer-copyright">
+		<p class="t-l-1 t-center pt-1 pb-1">COPYRIGHT © {{ 'now' | date: "%Y" }} DIAGEO</p>
+		<p class="t-l-1 t-center pt-1 pb-1">Please do not share with anyone under the legal purchase age for alcohol.  Drink Responsibly.</p>
+	</div>
+
 
 </div>
 </footer>

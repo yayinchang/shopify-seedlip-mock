@@ -8,10 +8,6 @@
 /*  1.0 COMPONENTS  */
 
 .comp-email-capture {
-	.t-h-3 {
-		margin: 0 0 var(--s-3);
-	}
-
 	&.is-success > * {
 		-webkit-animation: 0.6s fadeOut both;
 		animation: 0.6s fadeOut both;
@@ -29,6 +25,24 @@
 		white-space: nowrap;
 		-webkit-animation: 0.6s 0.6s fadeIn both;
 		animation: 0.6s 0.6s fadeIn both;
+	}
+
+	.help-text {
+		font-size: 8px;
+		opacity: 0.5;
+		text-align: left;
+		margin: var(--s-2) 0 var(--s-3);
+	}
+
+	.field {
+		button[type='submit'] {
+			border-bottom: 1px solid var(--cr-white);
+			padding: var(--s-1) var(--s-2);
+			height: 50px;
+			.svg-arrow-left-alt {
+				width: 25px;
+			}
+		}
 	}
 }
 

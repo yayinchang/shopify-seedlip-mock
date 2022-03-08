@@ -234,9 +234,9 @@ input[type='checkbox'] {
 	position: relative;
 	line-height: 1;
 
-	&:not(:last-child) {
-		margin-bottom: var(--s-3);
-	}
+	// &:not(:last-child) {
+	// 	margin-bottom: var(--s-3);
+	// }
 
 	input[type='text'],
 	input[type='email'],
@@ -251,13 +251,14 @@ input[type='checkbox'] {
 		overflow: hidden;
 		border: none;
 		outline: none;
-		color: var(--cr-black);
-		border-bottom: 1px solid var(--cr-black);
+		color: var(--cr-white);
+		letter-spacing: 0.08em;
+		border-bottom: 1px solid var(--cr-white);
 		transition: 0.2s;
 
 		&,
 		& ~ label {
-			padding: var(--s-2) 0;
+			padding: var(--s-1) var(--s-2);
 			font: var(--t-b-2);
 			line-height: 30px;
 			height: 50px;
@@ -274,9 +275,9 @@ input[type='checkbox'] {
 			transition: 0.2s;
 		}
 
-		&:focus {
-			background-color: var(--cr-subtle);
-		}
+		// &:focus {
+		// 	background-color: var(--cr-subtle);
+		// }
 
 		&:focus ~ label {
 			top: -20px;
