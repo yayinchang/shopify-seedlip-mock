@@ -8,22 +8,22 @@
 {% endcapture %}
 
 <div class="item-quantity f-h user-select-disable {% if leading_zero %} has-leading-zero{% endif %}">
-	<button 
+	<button
 		{% if starting_number == 1 %}
-			class="is-inactive" 
+			class="is-inactive"
 		{% endif %}
-		type="button" 
-		data-quantity-trigger="decrease" 
+		type="button"
+		data-quantity-trigger="decrease"
 		aria-label="Decrease quantity">
 	</button>
 
-	<input 
-		type="number" 
-		name="quantity" 
-		value="{% if leading_zero and starting_number == nil %}0{% elsif leading_zero and starting_number < 10 %}0{% endif %}{{ starting_number }}" 
+	<input
+		type="number"
+		name="quantity"
+		value="{% if leading_zero and starting_number == nil %}0{% elsif leading_zero and starting_number < 10 %}0{% endif %}{{ starting_number }}"
 		min="1"
 		{% comment %}
-		{% if item.inventory_policy == 'continue' or 
+		{% if item.inventory_policy == 'continue' or
 			item.inventory_management != 'shopify' %}
 			max="9999"
 		{% else %}
@@ -31,12 +31,12 @@
 		{% endif %}
 		{% endcomment %}
 		max="10"
-		class="t-b-1" 
+		class="t-h-3"
 		aria-label="Quantity">
 
-	<button 
-		type="button" 
-		data-quantity-trigger="increase" 
+	<button
+		type="button"
+		data-quantity-trigger="increase"
 		aria-label="Increase quantity">
 	</button>
 </div>

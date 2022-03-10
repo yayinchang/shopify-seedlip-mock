@@ -1,6 +1,8 @@
 /*
 
 	1.0 COMPONENTS
+		1.1 PRODUCT CARD
+		1.2 FLICKITY SLIDER
 	2.0 SECTIONS
 
 */
@@ -70,16 +72,20 @@
 
 .product-card {
 	position: relative;
+	display: flex;
+	flex-direction: column;
 
-	&.is-expanded {
-		grid-column: span 3;
-		.card-thumbnail::after {
-			padding-top: calc(70% - 28px);
-			@include mobile-only {
-				padding-top: calc(70% - 14px);
-			}
-			@include tablet-only {
-				padding-top: calc(70% - 21px);
+	@include tablet {
+		&.is-expanded {
+			grid-column: span 3;
+			.card-thumbnail::after {
+				padding-top: calc(70% - 28px);
+				@include mobile-only {
+					padding-top: calc(70% - 14px);
+				}
+				@include tablet-only {
+					padding-top: calc(70% - 21px);
+				}
 			}
 		}
 	}
@@ -127,6 +133,51 @@
 }
 
 /*  1.1 PRODUCT CARD - END  */
+
+/* 1.2 FLICKITY SLIDER */
+
+.flickity-viewport {
+	position: relative;
+	padding-top: 100%;
+	overflow: hidden;
+}
+
+.flickity-slider {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.flickity-slide {
+	width: 100%;
+}
+
+.flickity-page-dots {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: var(--s-2);
+	display: flex;
+	justify-content: center;
+
+	.dot {
+		width: 8px;
+		height: 4px;
+		border-radius: 2px;
+		background-color: var(--cr-primary);
+		opacity: 0.5;
+		margin: 0 4px;
+		transition: all 0.5s ease;
+
+		&.is-selected {
+			width: 16px;
+			opacity: 1;
+		}
+	}
+}
+
+/* 1.2 FLICKITY SLIDER - END */
 
 /*  1.0 COMPONENTS - END  */
 

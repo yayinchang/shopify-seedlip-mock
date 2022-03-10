@@ -28,7 +28,6 @@
 		</script>
 
 		{{ 'js-initialize.js' | asset_url | script_tag }}
-		{{ "//www.klaviyo.com/media/js/public/klaviyo_subscribe.js" | script_tag }}
 
 		{{ content_for_header }}
 		{% include 'html-page-sharing' %}
@@ -42,6 +41,9 @@
 		{% endcapture %}
 		{{ html_init | strip_newlines | replace: '	', '' }}
 		{{ "styles.min.css" | asset_url | stylesheet_tag }}
+
+		{{ "//www.klaviyo.com/media/js/public/klaviyo_subscribe.js" | script_tag }}
+		{{ 'js-plugin-flickity.js' | asset_url | script_tag }}
 	</head>
 
 	<body>

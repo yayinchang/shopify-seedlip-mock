@@ -370,8 +370,14 @@ const initCart = () => {
 	on('body', 'submit', 'form[action="/cart/add"]', e => {
 		e.preventDefault();
 		let form = e.target;
+		let productId;
+		if (form.querySelector('[name="id"]').type == "radio") {
+			productId = form.querySelector('[name="id"]:checked').value;
+		} else {
+			productId = form.querySelector('[name="id"]').value;
+		}
 		addItem(
-			form.querySelector('[name="id"]').value,
+			productId,
 			form.querySelector('[name="quantity"]').value
 		);
 	});
@@ -478,9 +484,39 @@ const initPageScroll = () => {
   })
 }
 
+const initProductSlider = () => {
+	const $slider = $('.product-slider').flickity({
+		prevNextButtons: false,
+		pageDots: false
+	});
+	const flkty = $slider.data('flickity');
+	const $sliderNavGroup = $('.product-slider-nav');
+	const $sliderNavInput = $sliderNavGroup.find('input');
+	const $sliderNavLabel = $sliderNavGroup.find('label');
+
+	$slider.on( 'select.flickity', function() {
+		$sliderNavLabel.filter('.is-selected')
+			.removeClass('is-selected');
+		$sliderNavLabel.eq( flkty.selectedIndex )
+			.addClass('is-selected');
+
+		$sliderNavInput.filter(':checked')
+			.prop("checked", false);
+		$sliderNavInput.eq( flkty.selectedIndex )
+			.prop("checked", true);
+	});
+
+	$sliderNavInput.on( 'click', function() {
+		const index = $(this).index();
+		$slider.flickity( 'select', index );
+	});
+}
+
 // execute pieces and components functions
 initItemQuantity();
 initFields();
+initCart();
+// initSlider();
 
 // execute global and component functions
 initPageTransition();
@@ -488,8 +524,6 @@ initPageAnimation();
 initPageScroll();
 initHeader();
 initContentLayout();
-
-initCart();
 
 // execute page specific functions
 switch (root.id) {
@@ -503,6 +537,10 @@ switch (root.id) {
 
 	case 'template-account':
 		initAccount();
+		break;
+
+	case 'template-product-single':
+		initProductSlider();
 		break;
 }
 

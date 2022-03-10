@@ -195,10 +195,20 @@
 	border: 1px var(--cr-primary) solid;
 	padding: 0 var(--s-4);
 
+	&:disabled {
+		color: var(--cr-primary);
+		background: var(--cr-subdued);
+	}
+
+	@include touch {
+		width: 100%;
+		padding: 0;
+	}
+
 	@media (hover: hover) {
 		&:hover {
 			color: var(--cr-primary);
-			background: var(--cr-white);
+			background: var(--cr-subdued);
 		}
 	}
 }
@@ -217,7 +227,7 @@ input[type='checkbox'] {
 	height: 15px;
 	margin-right: var(--s-1);
 	vertical-align: middle;
-	background: var(--cr-white) center/contain no-repeat;
+	background: var(--cr-white) center/cover no-repeat;
 	border: 1px solid;
 
 	&[type='radio'] {
@@ -226,7 +236,7 @@ input[type='checkbox'] {
 
 	&[type='radio']:checked,
 	&[type='checkbox']:checked {
-		background-color: var(--cr-black);
+		background-color: var(--cr-primary);
 	}
 }
 
@@ -392,14 +402,25 @@ form {
 }
 
 .item-quantity {
-	height: var(--s-5);
-	box-shadow: inset 0 0 0 1px var(--cr-subtle);
+	display: flex;
+	align-items: center;
+	height: 48px;
+	border: 1px solid var(--cr-primary);
+	border-radius: 48px;
+	margin-right: var(--s-2);
+
+	@include touch {
+		width: 100%;
+		border: none;
+		border-radius: 0%;
+		height: calc(var(--s-4) + var(--s-3));
+	}
 
 	button[data-quantity-trigger],
 	input[name='quantity'] {
 		position: relative;
 		display: inline-block;
-		height: var(--s-5);
+		height: 100%;
 		width: 60px;
 		text-align: center;
 	}
@@ -408,6 +429,14 @@ form {
 		flex: 1;
 		pointer-events: none;
 		-moz-appearance: textfield;
+		height: calc(var(--s-4) - 8px);
+		border-left: 1px solid var(--cr-secondary);
+		border-right: 1px solid var(--cr-secondary);
+
+		@include touch {
+			height: var(--s-4);
+			margin: var(--s-2) 0;
+		}
 	}
 
 	input[name='quantity']::-webkit-inner-spin-button,
@@ -421,12 +450,12 @@ form {
 		content: '';
 		position: absolute;
 		display: block;
-		width: 20px;
+		width: 12px;
 		height: 2px;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		background-color: var(--cr-black);
+		background-color: var(--cr-primary);
 	}
 
 	button[data-quantity-trigger='increase']:after {
