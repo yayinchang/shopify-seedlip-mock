@@ -7,7 +7,7 @@
 	{% assign starting_number = starting_number | default: 1 | plus: 0 %}
 {% endcapture %}
 
-<div class="item-quantity f-h user-select-disable {% if leading_zero %} has-leading-zero{% endif %}">
+<div class="item-quantity f-h user-select-disable {% if leading_zero %} has-leading-zero{% endif %} {% if classes %}{{ classes }}{% endif %}">
 	<button
 		{% if starting_number == 1 %}
 			class="is-inactive"

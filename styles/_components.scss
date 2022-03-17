@@ -2,8 +2,9 @@
 
 	1.0 COMPONENTS
 		1.1 PRODUCT CARD
-		1.2 FLICKITY SLIDER
-	2.0 SECTIONS
+		1.2 CART ITEMS
+	2.0 PLUGINS
+		2.1 FLICKITY SLIDER
 
 */
 
@@ -134,7 +135,68 @@
 
 /*  1.1 PRODUCT CARD - END  */
 
-/* 1.2 FLICKITY SLIDER */
+/*  1.2 CART ITEMS  */
+
+.cart-items-wrapper {
+	display: grid;
+	gap: var(--s-3);
+}
+
+.cart-item {
+	display: grid;
+	grid-template-columns: 130px 1fr;
+	gap: var(--s-3);
+	width: 100%;
+
+	@include mobile-only {
+		grid-template-columns: 80px 1fr;
+	}
+
+	.item-thumbnail {
+		position: relative;
+		&::after {
+			content: '';
+			display: block;
+			padding-top: 100%;
+		}
+	}
+
+	.item-info-price {
+		padding-left: var(--s-2);
+		opacity: 0.5;
+	}
+
+	.item-purchase {
+		margin-top: var(--s-3);
+	}
+}
+
+.upsell-products {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: var(--s-3);
+
+	.item-thumbnail {
+		position: relative;
+		&::after {
+			content: '';
+			display: block;
+			padding-top: 100%;
+		}
+	}
+
+	.upsell-product-price {
+		opacity: 0.5;
+	}
+}
+
+/*  1.2 CART ITEMS - END  */
+
+/*  1.0 COMPONENTS - END  */
+
+/*  2.0 PLUGINS  */
+
+/*  2.1 FLICKITY SLIDER  */
 
 .flickity-viewport {
 	position: relative;
@@ -177,10 +239,6 @@
 	}
 }
 
-/* 1.2 FLICKITY SLIDER - END */
+/*  2.1 FLICKITY SLIDER - END  */
 
-/*  1.0 COMPONENTS - END  */
-
-/*  2.0 SECTIONS  */
-
-/*  2.0 SECTIONS - END  */
+/*  2.0 PLUGINS - END  */

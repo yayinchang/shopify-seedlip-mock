@@ -60,14 +60,17 @@
 	</nav>
 
 	<div class="header-actions f-none">
-		<!-- {% if shop.customer_accounts_enabled %}
+		{%- comment -%}
+		{% if shop.customer_accounts_enabled %}
 			<a href="{{ shop.url | append: '/account' }}">Your Account</a>
-		{% endif %} -->
+		{% endif %}
+		{%- endcomment -%}
 
-		<a class="header-cart f-h f-j-c f-a-c" href="{{ shop.url | append: '/cart' }}">
+		<button
+			class="header-cart f-h f-j-c f-a-c minicart-open"
+			aria-label="Open minicart">
 			{% render 'svg-icons', icon: 'cart' %}
-		</a>
-		<span class="cart-total-items t-l-1">{{ cart.item_count }}</span>
+			<span class="cart-total-items t-l-1">{{ cart.item_count }}</span></button>
 	</div>
 
 </div>

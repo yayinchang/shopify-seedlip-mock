@@ -1,0 +1,164 @@
+{% schema %}
+{
+	"name": "Minicart",
+	"settings": [
+		{
+			"type": "header",
+			"content": "Empty cart"
+		},
+		{
+			"type": "text",
+			"id": "empty_cart_heading",
+			"label": "Heading",
+			"default": "Your cart is empty"
+		},
+		{
+			"type": "header",
+			"content": "Cart setting"
+		},
+		{
+			"type": "text",
+			"id": "upsell_title",
+			"label": "Upsell Title",
+			"default": "Inspired By Your Selections"
+		}
+	],
+	"max_blocks": 3,
+	"blocks": [
+		{
+			"type": "product",
+			"name": "product",
+			"settings": [
+				{
+					"type": "product",
+					"id": "product",
+					"label": "Product"
+				},
+				{
+					"type": "header",
+					"content": "If a product variant:"
+				},
+				{
+					"type": "text",
+					"id": "upsell_variant_id",
+					"label": "Upsell Product Variant ID",
+					"info": "Finding a variant ID: https://help.shopify.com/en/manual/products/variants/find-variant-id"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+
+<div class="global-minicart f-v">
+
+	<div class="minicart-header f-h f-j-b f-a-c">
+		<h2
+			id="minicart-heading"
+			class="t-l-2">
+			Your Cart
+			(<span class="cart-total-items">{{ cart.item_count }}</span>)
+		</h2>
+
+		<button
+			type="button"
+			class="minicart-close"
+			aria-label="close minicart">
+		{% render 'svg-icons', icon: 'close' %}</button>
+	</div>
+
+	<div class="minicart-content">
+		{% render 'comp-cart-items' %}
+	</div>
+
+	{% if section.blocks.size > 0 %}
+		<div class="minicart-upsell">
+			{% if section.settings.upsell_title != blank %}
+				<p class="upsell-title t-l-2 mb-3">
+					{{ section.settings.upsell_title }}
+				</p>
+			{% endif %}
+
+			<div class="upsell-products">
+				{% for block in section.blocks %}
+					{% if block.settings.product != blank %}
+
+					{% if block.settings.upsell_variant_id != blank %}
+						{% assign handle = block.settings.product.handle %}
+						{% assign product = all_products[handle] %}
+						{% for variant in product.variants %}
+							{% assign var_id = variant.id | append: "" %}
+							{% if block.settings.upsell_variant_id == var_id %}
+								{% assign p = variant %}
+								{% assign p_id = p.id %}
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						{% assign p = block.settings.product %}
+						{% assign p_id = p.variants.first.id %}
+					{% endif %}
+
+						<div class="upsell-product f-v">
+							<div class="item-thumbnail bg-subdued f-none">
+								<a
+									href="{{ p.url }}"
+									class="object-fit"
+									title="{{ p.title | escape }}">
+									{% if p.featured_image != nil %}
+										{% render 'img-srcset',
+											image: p.featured_image,
+											max_width: 160,
+											alt: p.title %}
+									{% endif %}
+								</a>
+							</div>
+
+							<div class="upsell-product-body f-auto mt-2 mb-2">
+								<div class="upsell-product-title t-l-1 line-clamp mb-1">
+									{{ p.title }}
+								</div>
+								<div class="upsell-product-price t-l-1">
+									{{ p.price | money | remove: '.00' }}
+								</div>
+							</div>
+
+							<button
+								class="upsell-add btn btn--primary btn--small"
+								data-cart-add-id="{{ p_id }}"
+								data-cart-add-quantity="1">Add</button>
+						</div>
+
+					{% endif %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="minicart-actions">
+
+		<div class="minicart-summary f-h f-a-c mb-3">
+			<p class="t-l-2 f-auto">Subtotal</p>
+			<span class="cart-total-price t-h-3">
+				{{ cart.total_price | money }}
+			</span>
+		</div>
+
+		<a
+			class="btn btn--primary"
+			href="{{ shop.url | append: '/checkout' }}">
+		Checkout</a>
+	</div>
+
+	<div class="minicart-empty type-spacing">
+		{% if section.settings.empty_cart_heading != empty %}
+			<div class="t-h-2">{{ section.settings.empty_cart_heading }}</div>
+		{% endif %}
+	</div>
+
+	<button
+		type="button"
+		class="minicart-close t-l-1 pl-3 pr-3 pb-3">
+	Keep Shopping</button>
+</div>
+
+<div class="global-minicart-overlay minicart-close"></div>

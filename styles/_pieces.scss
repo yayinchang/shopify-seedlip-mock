@@ -213,6 +213,14 @@
 	}
 }
 
+.btn--small {
+	line-height: 32px;
+	width: auto;
+	height: 32px;
+	border-radius: 4px;
+	padding: 0 var(--s-2);
+}
+
 .btn[disabled],
 button[disabled],
 input[disabled] {
@@ -460,6 +468,34 @@ form {
 
 	button[data-quantity-trigger='increase']:after {
 		transform: translate(-50%, -50%) rotate(90deg);
+	}
+
+	&--cart {
+		width: auto;
+		height: 32px;
+		border: 1px solid var(--cr-primary);
+		border-radius: 4px;
+
+		button[data-quantity-trigger],
+		input[name='quantity'] {
+			font: var(--t-l-2);
+			flex: none;
+			width: 32px;
+		}
+
+		input[name='quantity'] {
+			height: 32px;
+			border-left: 1px solid var(--cr-primary);
+			border-right: 1px solid var(--cr-primary);
+			margin: 0;
+		}
+
+		button[data-quantity-trigger]:before,
+		button[data-quantity-trigger]:after {
+			content: '';
+			width: 8px;
+			height: 2px;
+		}
 	}
 }
 

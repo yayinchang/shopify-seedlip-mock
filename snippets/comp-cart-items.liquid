@@ -3,20 +3,20 @@
 		{% assign item_product = item.product %}
 		{% assign item_variant = item.variant %}
 
-		<div 
-			class="cart-item" 
-			data-product-id="{{ item_product.id }}" 
-			data-item-id="{{ item_variant.id }}" 
+		<div
+			class="cart-item"
+			data-product-id="{{ item_product.id }}"
+			data-item-id="{{ item_variant.id }}"
 			data-item-line="{{forloop.index}}"
 			data-item-price="{{ item.price | money_without_currency }}">
-		<div class="f-h-center">
+
 			<div class="item-thumbnail">
-				<a 
-					href="{{ item.url }}" 
-					class="object-fit bg-subdued" 
+				<a
+					href="{{ item.url }}"
+					class="object-fit bg-subdued"
 					title="{{ item_product.title | escape }}">
 					{% if item.image != nil %}
-						{% render 'img-srcset', 
+						{% render 'img-srcset',
 							image: item.image,
 							max_width: 160,
 							alt: item.title %}
@@ -24,25 +24,31 @@
 				</a>
 			</div>
 
-			<div class="item-info">
-				<div class="item-info-title">{{ item_product.title }}</div>
-				{% if item_variant.title != 'Default Title' %}
-					<div class="item-info-variant-title">{{ item_variant.title }}</div>
-				{% endif %}
-				<div class="item-info-price">{{ item.price | money | remove: '.00' }}</div>
+			<div class="item-body">
+				<div class="item-info f-h">
+					{% if item_variant.title == 'Default Title' %}
+						<h3 class="item-info-title t-l-2 line-clamp f-auto">{{ item_product.title }}</h3>
+					{% else %}
+						<h3 class="item-info-variant-title t-l-2 line-clamp f-auto">{{ item_variant.title }}</h3>
+					{% endif %}
+					<div class="item-info-price t-l-2">{{ item.price | money | remove: '.00' }}</div>
+				</div>
+
+				<div class="item-purchase f-h">
+				{% render 'item-quantity',
+					item: item_variant,
+					starting_number: item.quantity,
+					classes: 'item-quantity--cart' %}
+
+				<div class="item-remove">
+					<button
+						type="button"
+						class="btn btn--primary btn--small item-remove-trigger t-l-1">
+					Remove</button>
+				</div>
+				</div>
 			</div>
 
-			{% render 'item-quantity',
-				item: item_variant,
-				starting_number: item.quantity %}
-
-			<div class="item-remove">
-				<button 
-					type="button"
-					class="item-remove-trigger t-l-1">
-				Remove</button>
-			</div>
-		</div>
 		</div>
 	{% endfor %}
 </div>

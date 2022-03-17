@@ -1,9 +1,14 @@
 <div class="header-space"></div>
 
-<section class="product-hero">
-	{% assign product_images = product.images %}
+{% assign product_images = product.images %}
+{% assign product_flavors = product.metafields.accentuate.flavor %}
+{% if product_images.size > 1 %}
+	{% assign is_slider = true %}
+{% endif %}
 
-  <div class="hero-images {% if product_images.size > 1 %}product-slider{% endif %}">
+<section class="product-hero">
+
+  <div class="hero-images {% if is_slider %}product-slider{% endif %}">
 		{% for image in product_images %}
 			<div class="product-image {% if product_images.size > 1 %}flickity-slide{% endif %}">
 				<span class="object-fit">
@@ -30,6 +35,8 @@
 
 		<div class="content-description t-b-1">
 			{{ product.description }}
+
+			<p class="content-flavor t-l-1 mt-3">Flavor: {{ product_flavors }}</p>
 		</div>
 
 		<form

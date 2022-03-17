@@ -27,8 +27,6 @@
 			const root = document.documentElement;
 		</script>
 
-		{{ 'js-initialize.js' | asset_url | script_tag }}
-
 		{{ content_for_header }}
 		{% include 'html-page-sharing' %}
 
@@ -43,12 +41,18 @@
 		{{ "styles.min.css" | asset_url | stylesheet_tag }}
 
 		{{ "//www.klaviyo.com/media/js/public/klaviyo_subscribe.js" | script_tag }}
+		{{ '//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js' | script_tag }}
+		{{ 'js-initialize.js' | asset_url | script_tag }}
 		{{ 'js-plugin-flickity.js' | asset_url | script_tag }}
 	</head>
 
 	<body>
+		<div class="global-skip">
+			<a class="btn" href="#main">Skip to content</a>
+		</div>
 
 		{% section 'global-header' %}
+		{% section 'global-minicart' %}
 		<main id="main">{{ content_for_layout }}</main>
 		{% section 'global-footer' %}
 

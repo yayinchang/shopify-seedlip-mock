@@ -484,6 +484,103 @@ const initPageScroll = () => {
   })
 }
 
+const initFlickitySlider = () => {
+	const flickitySlider = document.querySelectorAll('[data-flickity-slider]');
+
+	const flickitySliderTrigger = () => {
+		flickitySlider.forEach((el) => {
+			let flickity = new Flickity(
+				el,
+				JSON.parse(el.dataset.flickitySlider.replace(/'/g, '"').trim())
+			);
+			let childrenWidth = Object.values(
+				el.querySelector('.flickity-slider').childNodes
+			).reduce(
+				(total, i) =>
+					i.offsetWidth
+						? total +
+						  i.offsetWidth +
+						  parseInt(window.getComputedStyle(i).marginLeft) +
+						  parseInt(window.getComputedStyle(i).marginRight)
+						: total,
+				0
+			);
+
+			if (
+				// if total children width is lesser than slider width
+				el.getBoundingClientRect().width >= childrenWidth ||
+				// if flickity slider has breakpoint set, and window is greater than breakpoint
+				(el.dataset.flickityBreakpoint &&
+					window.innerWidth > parseInt(el.dataset.flickityBreakpoint))
+			) {
+				// destroy flickity
+				flickity.destroy();
+
+				setTimeout(() => {
+					el.querySelectorAll('[style*="left:"]').forEach((item) => {
+						item.style.setProperty('left', 'unset');
+					});
+				}, 100);
+			} else {
+				// avoid click on drag: https://github.com/metafizzy/flickity/issues/838
+				flickity.on('dragStart', () =>
+					flickity.slider.childNodes.forEach(
+						(slide) => (slide.style.pointerEvents = 'none')
+					)
+				);
+
+				flickity.on('dragEnd', () =>
+					flickity.slider.childNodes.forEach(
+						(slide) => (slide.style.pointerEvents = 'all')
+					)
+				);
+			}
+		});
+	};
+
+	flickitySliderTrigger();
+	window.addEventListener('resize', flickitySliderTrigger);
+
+	// swipe fix for IOS
+	var touchingCarousel = false;
+	var touchStartCoords;
+
+	document.body.addEventListener('touchstart', function(e) {
+		if (e.target.closest('.flickity-slider')) {
+			touchingCarousel = true;
+		} else {
+			touchingCarousel = false;
+			return;
+		}
+
+		touchStartCoords = {
+			x: e.touches[0].pageX,
+			y: e.touches[0].pageY,
+		};
+	});
+
+	document.body.addEventListener(
+		'touchmove',
+		function(e) {
+			if (!(touchingCarousel && e.cancelable)) {
+				return;
+			}
+
+			var moveVector = {
+				x: e.touches[0].pageX - touchStartCoords.x,
+				y: e.touches[0].pageY - touchStartCoords.y,
+			};
+
+			if (Math.abs(moveVector.x) > 7) {
+				e.preventDefault();
+			}
+		},
+		{
+			passive: false,
+		}
+	);
+};
+
 const initProductSlider = () => {
 	const $slider = $('.product-slider').flickity({
 		prevNextButtons: false,
@@ -516,7 +613,6 @@ const initProductSlider = () => {
 initItemQuantity();
 initFields();
 initCart();
-// initSlider();
 
 // execute global and component functions
 initPageTransition();
@@ -524,6 +620,7 @@ initPageAnimation();
 initPageScroll();
 initHeader();
 initContentLayout();
+initFlickitySlider();
 
 // execute page specific functions
 switch (root.id) {
