@@ -1,10 +1,6 @@
-# Shopify Starter Template
+# A Shopify project built for learning.
 
-> An example of a shopify project.
-
-## 📃 Set Up
-
-Clone this repository from your GitHub or Click [Use this template](https://github.com/View-Source-Dev/starter-shopify/generate).
+This is a mocking-up site of [seedlipdrinks.com](https://www.seedlipdrinks.com/) made with Shopify.
 
 ## 💡 Extras/Tips
 
