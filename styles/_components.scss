@@ -31,10 +31,10 @@
 	}
 
 	.help-text {
-		font-size: 8px;
+		font-size: 12px;
 		opacity: 0.5;
 		text-align: left;
-		margin: var(--s-2) 0 var(--s-3);
+		margin: var(--s-2) 0 var(--s-section-half);
 	}
 
 	.field {
@@ -109,6 +109,7 @@
 	.card-add-to-cart {
 		transition: all 0.4s var(--a-panel);
 		z-index: 30;
+
 		@include desktop {
 			position: absolute;
 			left: 0;
@@ -119,10 +120,15 @@
 			align-items: center;
 			opacity: 0;
 			visibility: hidden;
+
+			.btn {
+				box-shadow: 0 0 12px rgba(21, 71, 52, 0.25);
+			}
 		}
 	}
 
-	@include desktop {
+
+	@media (hover: hover) {
 		&:hover {
 			.card-add-to-cart {
 				top: 75%;

@@ -1,10 +1,16 @@
-<div class="header-space"></div>
-
 {% assign product_images = product.images %}
-{% assign product_flavors = product.metafields.accentuate.flavor %}
 {% if product_images.size > 1 %}
 	{% assign is_slider = true %}
 {% endif %}
+
+{% assign assign product_flavors = product.metafields.accentuate.flavor %}
+
+{% assign has_selling_plan = false %}
+{% for group in product.selling_plan_groups %}
+	{% assign has_selling_plan = group.selling_plans %}
+{% endfor %}
+
+<div class="header-space"></div>
 
 <section class="product-hero">
 
@@ -25,28 +31,26 @@
 
 		<div class="content-header">
 			<h1 class="product-title t-h-2 {% if product.variants.size > 1 %}cr-secondary{% endif %}">{{ product.title }}</h1>
-
-			{% if product.variants.size == 1 %}
-				<div class="content-price t-h-2 t-center">
-					{% render 'item-price' %}
-				</div>
-			{% endif %}
 		</div>
 
-		<div class="content-description t-b-1">
+		<div class="content-description t-b-2">
 			{{ product.description }}
-
-			<p class="content-flavor t-l-1 mt-3">Flavor: {{ product_flavors }}</p>
+			{% if product_flavors != blank %}
+				<p class="content-flavor t-l-1 mt-2">Flavor: {{ product_flavors }}</p>
+			{% endif %}
 		</div>
 
 		<form
 			class="content-form"
 			action="/cart/add"
 			method="post"
-			enctype="multipart/form-data">
+			enctype="multipart/form-data"
+			data-active-type="one-time-purchase">
+
 			{% if product.variants.size > 1 %}
 				<div class="product-variants product-slider-nav">
-					<p class="t-l-2 mb-2">Options</p>
+					<p class="t-l-2 mb-3">Options:</p>
+
 					<div class="product-variant">
 						{% for variant in product.variants %}
 							<input
@@ -65,46 +69,58 @@
 								>
 							{% endfor %}
 					</div>
-					<div class="product-variant-info">
-						{% for variant in product.variants %}
-							<label class=" t-h-3 {% if variant.id == product.selected_or_first_available_variant.id %}is-selected{% endif %}" for="product-variant-{{ variant.id }}">
-								{{ variant.title }}
-								<span class="price">{{ variant.price | money | remove: '.00' }}</span>
-							</label>
-						{% endfor %}
-					</div>
-				</div>
-				{%- comment -%}
-				<select name="id">
-					<option selected disable>Select a variant</option>
+
 					{% for variant in product.variants %}
-						<option
-							value="{{ variant.id }}"
-							{% if variant.available == false %}
-								disabled
-							{% endif %}
-							{% if variant.id == product.selected_or_first_available_variant.id %}
-								selected
-							{% endif %}>
-							{{ variant.title }}
-							{% if variant.available == false %} - Sold Out{% endif %}
-						</option>
+						<div class="product-variant-info {% if variant.id == product.selected_or_first_available_variant.id %}is-selected{% endif %}">
+							<label class="t-h-3" for="product-variant-{{ variant.id }}">
+								{{ variant.title }}
+								{% if has_selling_plan == false %}
+									{% render 'item-price', product: variant,  simple_format: true %}
+								{% endif %}
+							</label>
+						</div>
 					{% endfor %}
-				</select>
-				{%- endcomment -%}
+				</div>
 			{% else %}
 				<input
 					type="hidden"
 					name="id"
 					value="{{ product.selected_or_first_available_variant.id }}">
+
+				{% if product.available and has_selling_plan != false %}
+					{% render 'item-subscription',
+						item: product %}
+				{% endif %}
 			{% endif %}
 
-			<div class="product-purchase">
-				{% render 'item-quantity' %}
-
+			<div class="product-purchase
+				{% if product.variants.size == 1 %}is-single{% endif %}">
 				{% if product.available %}
+
+					{% if product.variants.size > 1 %}
+						<div class="purchase-panel">
+							<div class="product-subscriptions">
+								{% for variant in product.variants %}
+									{% if variant.available and has_selling_plan != false %}
+										<div class="product-subscription {% if variant.id == product.selected_or_first_available_variant.id %}is-selected{% endif %}">
+											{% render 'item-subscription',
+												item: variant,
+												is_variant: true %}
+										</div>
+									{% endif %}
+								{% endfor %}
+							</div>
+							{% render 'item-quantity',
+								classes: 'mt-3' %}
+						</div>
+					{% else %}
+
+						{% render 'item-quantity' %}
+
+					{% endif %}
+
 					<button
-						class="btn btn--primary"
+						class="btn btn--primary js-add-to-cart-btn"
 						type="submit">
 					Add to Cart</button>
 				{% else %}
@@ -116,10 +132,10 @@
 			</div>
 		</form>
 
-		<ol class="product-details">
-			<li class="t-b-1">Allergy Friendly</li>
-			<li class="t-b-1">Calorie Free</li>
-			<li class="t-b-1">Sugar Free</li>
+		<ol class="product-features">
+			<li class="t-b-2">Allergy Friendly</li>
+			<li class="t-b-2">Calorie Free</li>
+			<li class="t-b-2">Sugar Free</li>
 		</ol>
 
 	</div>

@@ -27,8 +27,9 @@
 	--t-h-2: 500 40px/1.2 var(--font-sans-serif);
 	--t-h-3: 500 24px/1.2 var(--font-sans-serif);
 	--t-h-4: 500 16px/1.2 var(--font-serif);
-	--t-b-1: 400 16px/1.5 var(--font-serif);
-	--t-b-2: 400 12px/1.5 var(--font-serif);
+	--t-b-1: 400 24px/1.5 var(--font-serif);
+	--t-b-2: 400 16px/1.5 var(--font-serif);
+	--t-b-3: 400 12px/1.5 var(--font-serif);
 	--t-l-2: 400 14px/1.5 var(--font-sans-serif);
 	--t-l-1: 400 12px/1.5 var(--font-sans-serif);
 
@@ -71,6 +72,7 @@
 
 ::placeholder {
 	color: inherit;
+	opacity: 0.5;
 }
 
 ::-webkit-input-placeholder {
@@ -96,6 +98,8 @@
 		--t-h-1: 500 32px/1.2 var(--font-sans-serif);
 		--t-h-2: 500 24px/1.2 var(--font-sans-serif);
 		--t-h-3: 500 20px/1.2 var(--font-sans-serif);
+
+		--t-b-1: 400 18px/1.5 var(--font-serif);
 
 		--s-section: var(--s-4);
 		--s-section-half: var(--s-3);
@@ -165,7 +169,7 @@
 /*	U3 TYPOGRAPHY	*/
 
 body {
-	font: var(--t-b-2);
+	font: var(--t-b-3);
 	color: var(--cr-primary);
 	background-color: var(--cr-subdued);
 	-webkit-font-smoothing: antialiased;
@@ -203,13 +207,17 @@ h6,
 	text-transform: uppercase;
 }
 
-p,
 .t-b-1 {
 	font: var(--t-b-1);
 }
 
+p,
 .t-b-2 {
 	font: var(--t-b-2);
+}
+
+.t-b-3 {
+	font: var(--t-b-3);
 	letter-spacing: .02em;
 }
 
@@ -239,6 +247,10 @@ p,
 
 .t-center {
 	text-align: center;
+}
+
+.t-underline {
+	text-decoration: underline;
 }
 
 .line-clamp {

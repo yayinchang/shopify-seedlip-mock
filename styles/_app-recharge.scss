@@ -1,0 +1,121 @@
+.rc-container-wrapper {
+	display: none;
+}
+
+.form-purchase-types {
+
+	.purchase-type-field {
+		display: flex;
+		align-items: center;
+
+		input[type='radio'] {
+			flex: none;
+			position: relative;
+			width: var(--s-3);
+			height: var(--s-3);
+			background-color: transparent;
+			cursor: pointer;
+			margin-top: 1px;
+			margin-right: var(--s-2);
+
+			&:checked {
+				background-color: transparent;
+				&:before {
+					content: '';
+					position: absolute;
+					top: 2px;
+					left: 2px;
+					right: 2px;
+					bottom: 2px;
+					border-radius: 100%;
+					background: var(--cr-primary);
+				}
+			}
+		}
+
+		label {
+			cursor: pointer;
+		}
+	}
+
+	.purchase-frequency {
+		margin-left: 30px;
+
+		.select-wrapper {
+			position: relative;
+			user-select: none;
+			max-width: 180px;
+		}
+
+		.select-trigger {
+			position: relative;
+			align-items: center;
+			justify-content: space-between;
+			text-decoration: underline;
+			white-space: nowrap;
+			border-radius: 4px;
+			background: darken(#f2f3f2, 5%);
+			padding: 6px 12px;
+			cursor: pointer;
+
+			.svg-caret-down {
+				width: 12px;
+				height: 10px;
+				margin-left: 6px;
+				transition: 0.2s;
+			}
+		}
+
+		.custom-options {
+			display: flex;
+			flex-direction: column;
+			position: absolute;
+			top: 100%;
+			left: 0;
+			width: 100%;
+			background: var(--cr-subdued);
+			border: 1px solid var(--cr-primary);
+			border-radius: 4px;
+			box-shadow: -1px -2px 4px rgba(255, 255, 255, 0.25),
+				1px 2px 5px rgba(51, 58, 122, 0.5);
+			overflow: hidden;
+			transition: 0.2s;
+			white-space: nowrap;
+			pointer-events: none;
+			opacity: 0;
+			z-index: 10;
+
+			.custom-option {
+				transition: 0.2s;
+				padding: 6px 12px;
+				cursor: pointer;
+
+				&.selected {
+					color: var(--cr-white);
+					background: var(--cr-primary);
+					pointer-events: none;
+				}
+
+				&.disabled {
+					background: var(--cr-secondary);
+					pointer-events: none;
+				}
+
+				&:hover {
+					background: darken(#f2f3f2, 10%);
+				}
+			}
+		}
+
+		.select.active {
+			.select-trigger .svg-caret-down {
+				transform: rotate(180deg);
+			}
+
+			.custom-options {
+				opacity: 1;
+				pointer-events: auto;
+			}
+		}
+	}
+}

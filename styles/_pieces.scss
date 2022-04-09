@@ -45,7 +45,7 @@
 	ol,
 	ul {
 		margin: var(--s-3) auto;
-		font: var(--t-b-2);
+		font: var(--t-b-3);
 
 		a {
 			text-decoration: underline;
@@ -99,7 +99,7 @@
 		border-spacing: 0;
 
 		& > * {
-			font: var(--t-b-2);
+			font: var(--t-b-3);
 		}
 
 		th,
@@ -117,7 +117,7 @@
 
 		p {
 			margin: 0;
-			font: var(--t-b-2);
+			font: var(--t-b-3);
 		}
 	}
 }
@@ -202,7 +202,7 @@
 
 	@include touch {
 		width: 100%;
-		padding: 0;
+		padding: 0 var(--s-2);
 	}
 
 	@media (hover: hover) {
@@ -277,7 +277,7 @@ input[type='checkbox'] {
 		&,
 		& ~ label {
 			padding: var(--s-1) var(--s-2);
-			font: var(--t-b-2);
+			font: var(--t-b-3);
 			line-height: 30px;
 			height: 50px;
 		}
@@ -386,7 +386,7 @@ form {
 
 	.form-error,
 	.form-success {
-		font: var(--t-b-1);
+		font: var(--t-b-2);
 	}
 
 	.form-errors ul {
@@ -417,13 +417,6 @@ form {
 	border-radius: 48px;
 	margin-right: var(--s-2);
 
-	@include touch {
-		width: 100%;
-		border: none;
-		border-radius: 0%;
-		height: calc(var(--s-4) + var(--s-3));
-	}
-
 	button[data-quantity-trigger],
 	input[name='quantity'] {
 		position: relative;
@@ -440,11 +433,6 @@ form {
 		height: calc(var(--s-4) - 8px);
 		border-left: 1px solid var(--cr-secondary);
 		border-right: 1px solid var(--cr-secondary);
-
-		@include touch {
-			height: var(--s-4);
-			margin: var(--s-2) 0;
-		}
 	}
 
 	input[name='quantity']::-webkit-inner-spin-button,

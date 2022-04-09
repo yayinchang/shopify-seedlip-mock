@@ -62,12 +62,12 @@
 				<li>
 					<ul class="order-details-items f-h">
 						<li class="item-thumbnail">
-							<a 
-								href="{{ item.url }}" 
-								class="object-contain" 
+							<a
+								href="{{ item.url }}"
+								class="object-contain"
 								title="{{ item.title | escape }}">
 								{% if item.image != nil %}
-									{% render 'img-srcset', 
+									{% render 'img-srcset',
 										image: item.image,
 										max_width: 160,
 										alt: item.image.alt %}
@@ -76,10 +76,10 @@
 						</li>
 
 						<li class="item-info">
-							<p class="t-b-2">
+							<p class="t-b-3">
 								{{ item.product.title }}
 
-								{% if item.variant != empty and 
+								{% if item.variant != empty and
 									item.variant.title != 'Default Title' %}
 									<br>{{ item.variant.title }}
 								{% endif %}
@@ -126,7 +126,7 @@
 			<div class="summary-right">{{ order.shipping_price | money }}</div>
 		</div>
 
-		<div class="summary t-b-1">
+		<div class="summary t-b-2">
 			<div class="summary-left">Total: </div>
 			<div class="summary-right">{{ order.total_price | money }}</div>
 		</div>

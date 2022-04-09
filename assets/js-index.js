@@ -259,16 +259,20 @@ const initCart = () => {
 	this.addItem = (
 		variantId,
 		quantity,
+		sellingPlan,
 		updateCartTotal = true,
 		updateCartItems = true,
 		minicartOpenDelay = 400
 	) => {
+		let parameters = {
+			id: variantId,
+			quantity: quantity,
+			...sellingPlan,
+		};
+
 		fetch('/cart/add.js', {
 			method: 'POST',
-			body: JSON.stringify({
-				id: variantId,
-				quantity: quantity,
-			}),
+			body: JSON.stringify(parameters),
 			headers: {
 				'Content-Type': 'application/json',
 				'X-Requested-With': 'xmlhttprequest',
@@ -371,14 +375,37 @@ const initCart = () => {
 		e.preventDefault();
 		let form = e.target;
 		let productId;
+
+		const isSubscription = form.dataset.activeType.includes('subscription');
+		const subscriptionForm = form.querySelector('.form-purchase-types.is-active');
+		const propertiesSubscription = subscriptionForm.querySelector(
+			'input[name="properties[subscription]"]'
+		);
+
+		let sellingPlan = '';
+
+		if (propertiesSubscription) {
+			const subscriptionPlan = propertiesSubscription.dataset.plan;
+			const subscriptionId = propertiesSubscription.value;
+
+			sellingPlan = {
+				...(isSubscription && { selling_plan: subscriptionId }),
+				properties: {
+					...(isSubscription && { Subscription: subscriptionPlan }),
+				},
+			};
+		}
+
 		if (form.querySelector('[name="id"]').type == "radio") {
 			productId = form.querySelector('[name="id"]:checked').value;
 		} else {
 			productId = form.querySelector('[name="id"]').value;
 		}
+
 		addItem(
 			productId,
-			form.querySelector('[name="quantity"]').value
+			form.querySelector('[name="quantity"]').value,
+			sellingPlan
 		);
 	});
 };
@@ -587,25 +614,138 @@ const initProductSlider = () => {
 		pageDots: false
 	});
 	const flkty = $slider.data('flickity');
-	const $sliderNavGroup = $('.product-slider-nav');
-	const $sliderNavInput = $sliderNavGroup.find('input');
-	const $sliderNavLabel = $sliderNavGroup.find('label');
+	const $optionGroup = $('.product-variants');
+	const $optionInputs = $optionGroup.find('.product-variant-selector');
+	const $optionInfos = $optionGroup.find('.product-variant-info');
+	const $subscriptionGroup = $('.product-subscriptions');
+	const $subscriptionInputs = $subscriptionGroup.find('.product-subscription');
+	const $subscriptionPurchaseForms = $subscriptionGroup.find('.form-purchase-types');
 
 	$slider.on( 'select.flickity', function() {
-		$sliderNavLabel.filter('.is-selected')
+
+		$optionInputs.filter(':checked')
+			.prop("checked", false);
+		$optionInputs.eq( flkty.selectedIndex )
+			.prop("checked", true);
+
+		$optionInfos.filter('.is-selected')
 			.removeClass('is-selected');
-		$sliderNavLabel.eq( flkty.selectedIndex )
+		$optionInfos.eq( flkty.selectedIndex )
 			.addClass('is-selected');
 
-		$sliderNavInput.filter(':checked')
-			.prop("checked", false);
-		$sliderNavInput.eq( flkty.selectedIndex )
-			.prop("checked", true);
+		$subscriptionInputs.filter('.is-selected')
+			.removeClass('is-selected');
+		$subscriptionInputs.eq( flkty.selectedIndex )
+			.addClass('is-selected');
+
+		if ($subscriptionPurchaseForms) {
+
+			$subscriptionPurchaseForms.removeClass('is-active')
+
+			$subscriptionPurchaseForms.find('input').filter(':checked')
+				.prop("checked", false);
+
+			$subscriptionPurchaseForms.eq( flkty.selectedIndex ).addClass('is-active');
+			$subscriptionPurchaseForms.eq( flkty.selectedIndex ).find('.purchase-type.one-time input').prop("checked", true);
+
+		}
 	});
 
-	$sliderNavInput.on( 'click', function() {
+	$optionInputs.on( 'click', function() {
 		const index = $(this).index();
 		$slider.flickity( 'select', index );
+	});
+}
+
+const initProductSubscription = () => {
+	const purchaseForms = document.querySelectorAll('.form-purchase-types');
+	const purchaseTypes = document.querySelectorAll('.purchase-type');
+	const purchaseFrequency = document.querySelector('.purchase-frequency');
+
+	// activate first subscription form & input on pageload
+	purchaseForms[0].classList.add('is-active');
+	purchaseTypes[0].querySelector('input').checked = true;
+
+	on('body', 'click', '.purchase-type, .purchase-type *', (e) => {
+		const form = e.target.closest('form[action="/cart/add"]');
+		let target = e.target.closest('.purchase-type');
+
+		purchaseTypes.forEach((purchaseType) => {
+			purchaseType.querySelector('input[type="radio"]').checked = false;
+		});
+
+		purchaseFrequency.classList.remove('is-active');
+
+		if (target.classList.contains('subscription')) {
+			target.querySelector('input[type="radio"]').checked = true;
+			purchaseFrequency.classList.add('is-active');
+			form.dataset.activeType = 'subscription';
+		} else {
+			target.querySelector('input[type="radio"]').checked = true;
+			form.dataset.activeType = 'one-time-purchase';
+		}
+	});
+
+	const dropdownWrapper = document.querySelectorAll('.select-wrapper');
+
+	dropdownWrapper.forEach((dropdown) => {
+		const dropdownTrigger = dropdown.querySelector('.select-trigger');
+		const dropdownSelect = dropdown.querySelector('.select');
+		const dropdownOptions = dropdown.querySelectorAll(
+			'.custom-options .custom-option'
+		);
+		const propertiesSubscription = dropdown.querySelector(
+			'input[name="properties[subscription]"]'
+		);
+
+		dropdownOptions.forEach((option) => {
+			const updateDropdownVal = (selectedOption) => {
+				//update subscription id
+				if (propertiesSubscription) {
+					propertiesSubscription.value = selectedOption.dataset.valueId;
+					propertiesSubscription.dataset.plan = selectedOption.dataset.value;
+				}
+				dropdownTrigger.firstChild.data = selectedOption.innerHTML;
+			};
+			//onload value
+			if (option.classList.contains('selected')) {
+				updateDropdownVal(option);
+			}
+
+			//onclick
+			option.addEventListener('click', (e) => {
+				if (e.target.classList.contains('selected')) {
+					dropdownSelect.classList.remove('active');
+				} else {
+					dropdownOptions.forEach((item) => {
+						item.classList.remove('selected');
+					});
+					e.target.classList.add('selected');
+					updateDropdownVal(e.target);
+					dropdownSelect.classList.remove('active');
+				}
+			});
+		});
+
+		//toggle dropdown
+		if (dropdownTrigger) {
+			dropdownTrigger.addEventListener('click', () => {
+				dropdownSelect.classList.toggle('active');
+			});
+
+			document.addEventListener('click', (e) => {
+				if (
+					dropdownSelect.classList.contains('active') &&
+					e.target &&
+					!e.target.classList.contains('select-trigger') &&
+					!e.target.closest('.select-trigger') &&
+					!e.target.classList.contains('custom-options') &&
+					!e.target.closest('.custom-options')
+				) {
+					dropdownSelect.classList.remove('active');
+				}
+			});
+		}
 	});
 }
 
@@ -638,6 +778,7 @@ switch (root.id) {
 
 	case 'template-product-single':
 		initProductSlider();
+		initProductSubscription();
 		break;
 }
 

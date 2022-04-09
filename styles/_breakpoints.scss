@@ -1,6 +1,7 @@
 $md: 600px;
 $lg: 900px;
 $xl: 1200px;
+$hd: 1400px;
 
 // Responsiveness
 @mixin from($device) {
@@ -53,6 +54,18 @@ $xl: 1200px;
 
 @mixin desktop {
 	@media screen and (min-width: $xl) {
+		@content;
+	}
+}
+
+@mixin desktop-only {
+	@media screen and (min-width: $xl) and (max-width: $hd - 1px) {
+		@content;
+	}
+}
+
+@mixin widescreen {
+	@media screen and (min-width: $hd) {
 		@content;
 	}
 }

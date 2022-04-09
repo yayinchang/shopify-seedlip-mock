@@ -1,0 +1,83 @@
+<div class="form-purchase-types">
+
+	{% unless item.requires_selling_plan %}
+		{%- comment -%} One-time {%- endcomment -%}
+		<div class="purchase-type one-time f-h f-a-c">
+			<div class="purchase-type-field">
+				<input
+					type="radio"
+					name="selling_plan"
+					id="{{ item.id }}-purchase-type-one-time"
+					value="">
+				<label class="t-b-1" for="{{ item.id }}-purchase-type-one-time">
+					One-time purchase
+					{% render 'item-price', product: item,  simple_format: true %}
+				</label>
+			</div>
+		</div>
+	{% endunless %}
+
+	{%- comment -%} Subscription {%- endcomment -%}
+	{% if is_variant %}
+		{% assign product = item.product %}
+	{% else %}
+		{% assign product = item %}
+	{% endif %}
+
+	{% for group in product.selling_plan_groups %}
+		{% assign subscription_pricing_value = group.selling_plans[0].price_adjustments[0].value %}
+		{% assign subscription_pricing_factor = 100 | minus: group.selling_plans[0].price_adjustments[0].value %}
+
+		{% if product.variants.size > 1 %}
+			{% for variant in product.variants %}
+				{% if variant.id == item.id %}
+					{% assign subscription_pricing = item.price | times: subscription_pricing_factor | divided_by: 100 %}
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			{% assign subscription_pricing = product.price | times: subscription_pricing_factor | divided_by: 100 %}
+		{% endif %}
+
+		<div class="purchase-type subscription f-h f-a-c mt-1">
+			<div class="purchase-type-field">
+				<input
+					type="radio"
+					name="selling_plan"
+					id="{{ item.id }}-purchase-type-{{ group.name | handleize }}"
+					value="{{ group.selling_plans[0].id }}">
+				<label class="t-b-1" for="{{ item.id }}-purchase-type-{{ group.name | handleize }}">
+					Subscribe & Save {{ subscription_pricing_value | append: '%' }}
+					<span class="price pl-1">
+						{{ subscription_pricing | money | remove: '.00' }}
+						<s style="opacity: 0.5;">{{ item.price | money | remove: '.00' }}</s>
+					</span>
+				</label>
+			</div>
+		</div>
+
+		<div class="purchase-frequency f-h f-w f-a-c">
+			<div class="t-l-2 mr-2">Frequency:</div>
+				<div class="select-wrapper">
+					<input type="hidden" name="properties[subscription]" value="" data-plan="">
+					<div class="select f-v">
+						<div
+							class="select-trigger f-h t-l-2"
+							data-value-id=""
+							data-value="">
+							{% render 'svg-icons', icon: 'caret-down' %}
+						</div>
+						<div class="custom-options">
+							{% for plans in group.selling_plans %}
+								{% assign h_plans = plans.options[0].value | handleize %}
+								<span
+									class="custom-option t-l-2 {% if h_plans == '14-days' %}selected{% endif %}"
+									data-value-id="{{ plans.id }}"
+									data-value="{{ plans.options[0].value}}">Every {{ plans.options[0].value }}</span>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+		</div>
+	{% endfor %}
+
+</div>

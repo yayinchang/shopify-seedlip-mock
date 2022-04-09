@@ -3,12 +3,29 @@
 	{% assign price_max = product.price_max | money | remove: '.00' %}
 {% endcapture %}
 
-{% if product.compare_at_price_min > product.price and
-	product.compare_at_price_max != 0 %}
-	<span>{{ price_min }}</span>
-	<s class="pl-1" style="opacity: 0.5;">{{ product.compare_at_price_min | money | remove: '.00' }}</s>
+{% if simple_format %}
+
+	<span class="price">
+		{{ product.price | money | remove: '.00' }}
+		<s style="opacity: 0.5;">{{ product.compare_at_price | money | remove: '.00' }}</s>
+	</span>
+
+{% elsif product.has_only_default_variant == false %}
+
+	<span class="price">{{ price_min }} ~ {{ price_max }}</span>
+
 {% else %}
-	{{ price_min }}{% if price_min != price_max %}+{% endif %}
+
+	{% if product.compare_at_price_min > product.price and
+		product.compare_at_price_max != 0 %}
+		<span class="price">
+			{{ price_min }}
+			<s style="opacity: 0.5;">{{ product.compare_at_price_min | money | remove: '.00' }}</s>
+		</span>
+	{% else %}
+		{{ price_min }}{% if price_min != price_max %}+{% endif %}
+	{% endif %}
+
 {% endif %}
 
 {% unless product.available %}
