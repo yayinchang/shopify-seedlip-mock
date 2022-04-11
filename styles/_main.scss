@@ -43,7 +43,7 @@
 	&.scrolled,
 	.minicart-is-active & {
 		background-color: var(--cr-subdued) !important;
-		box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+		// box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 	}
 }
 
@@ -349,15 +349,34 @@
 	}
 
 	.minicart-upsell {
-		border-top: 1px solid var(--cr-secondary);
+		// border-top: 1px solid var(--cr-secondary);
 		padding: var(--s-3);
 		transition: 0.4s var(--a-panel);
+		box-shadow: 0 -4px 10px rgba(21, 71, 52, 0.1);
+		max-height: 160px;
+		overflow: hidden;
+
+		&:hover {
+			max-height: 100%;
+
+			.upsell-title::after {
+				content: '-';
+			}
+		}
 
 		@include mobile-only {
-			transform: translate3d(0, 50%, 0);
+			max-height: 120px;
+		}
 
-			&:hover {
-				transform: translate3d(0, 0, 0);
+		.upsell-title {
+			display: flex;
+			justify-content: space-between;
+
+			&::after {
+				content: '+';
+				font-size: 20px;
+				font-weight: 300;
+				line-height: 1;
 			}
 		}
 	}

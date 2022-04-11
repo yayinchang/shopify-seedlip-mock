@@ -34,6 +34,14 @@
 					<div class="item-info-price t-l-2">{{ item.price | money | remove: '.00' }}</div>
 				</div>
 
+				<div class="item-selling-plan">
+					{% if item.selling_plan_allocation %}
+						<p class="t-b-2">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+					{% else %}
+						<p class="t-b-2">One-time purchase</p>
+					{% endif %}
+				</div>
+
 				<div class="item-purchase f-h">
 				{% render 'item-quantity',
 					item: item_variant,
